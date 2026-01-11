@@ -16,10 +16,10 @@ class TransormNetwork(nn.Module):
 
     def create_downsampling(self) -> None:
         self.conv1 = ConvolutionalLayer(in_ch=3, out_ch=32, kernel_size=9, stride=1)
-        self.conv2 = ConvolutionalLayer(in_ch=32, out_ch=64, kernel_size=3, stride=2)
-        self.conv3 = ConvolutionalLayer(in_ch=64, out_ch=128, kernel_size=3, stride=2)
         self.in_down1 = nn.InstanceNorm2d(32, affine=True)
+        self.conv2 = ConvolutionalLayer(in_ch=32, out_ch=64, kernel_size=3, stride=2)
         self.in_down2 = nn.InstanceNorm2d(64, affine=True)
+        self.conv3 = ConvolutionalLayer(in_ch=64, out_ch=128, kernel_size=3, stride=2)        
         self.in_down3 = nn.InstanceNorm2d(128, affine=True)
 
     def create_residual_blocks(self) -> None:
@@ -28,8 +28,8 @@ class TransormNetwork(nn.Module):
     
     def create_upsampling(self):
         self.upsample1 = UpsampleLayer(in_ch=128, out_ch=64)
-        self.upsample2 = UpsampleLayer(in_ch=64, out_ch=32)
         self.in_up1 = nn.InstanceNorm2d(64, affine=True)
+        self.upsample2 = UpsampleLayer(in_ch=64, out_ch=32)
         self.in_up2 = nn.InstanceNorm2d(32, affine=True)
 
     def forward(self, t: torch.Tensor) -> torch.Tensor:
