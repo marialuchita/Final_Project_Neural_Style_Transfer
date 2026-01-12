@@ -5,6 +5,8 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 
+VGG_MEAN = (0.485, 0.456, 0.406)
+VGG_STD = (0.229, 0.224, 0.225)
 
 class TrainDataset(Dataset):
     """
@@ -40,6 +42,16 @@ class TrainDataset(Dataset):
         return t
 
 def data_loader(folder_path: str):
+    batch_size = 4
+    workers = 2
     dataset = TrainDataset(folder_path)
-    loader = DataLoader(dataset, batch_size=4, shuffle=True, drop_last=True, num_workers=2, pin_memory=True)
+    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True, drop_last=True, num_workers=workers, pin_memory=True)
     return loader
+
+def normalize_for_vgg(t: torch.Tensor) -> torch.Tensor:
+    t_mean = t.new_tensor(VGG_MEAN).view(1, 3, 1, 1) # N - batch size, C - number of channels (RGB), H - height, W - width
+    t_std = t.new_tensor(VGG_STD).view(1, 3, 1, 1)
+    out_t = (t - t_mean) / t_std
+    return out_t
+
+
