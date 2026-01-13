@@ -6,7 +6,7 @@ class LossNetwork(nn.Module):
     def __init__(self) -> None:
         super().__init__()
         weights = models.VGG16_Weights.DEFAULT
-        vgg16 = models.vgg16(weights=weights)
+        vgg16 = models.vgg16(weights=weights).eval()
         vgg16_features = vgg16.features
 
         features1 = vgg16_features[0:4]
@@ -47,4 +47,5 @@ class LossNetwork(nn.Module):
             "relu3_3": relu3_3,
             "relu4_3": relu4_3
         }
+
 
