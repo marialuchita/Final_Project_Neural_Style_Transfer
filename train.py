@@ -1,3 +1,5 @@
+import time
+import os
 from loss_network import *
 from transform_network import TransformNetwork
 
@@ -41,7 +43,8 @@ def compute_tv_loss(t: torch.Tensor) -> torch.Tensor:
     tv_loss = horizontal_diff.mean() + vertical_diff.mean()
     return tv_loss
 
-def train(content_folder_path: str, style_img_path: str):
+def train(content_folder_path: str, style_img_name: str):
+    style_img_path = os.path.join("images/style", style_img_name)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Device:", device)
 
@@ -73,8 +76,12 @@ def train(content_folder_path: str, style_img_path: str):
         target_style_features = vgg_network(normalize_for_vgg(target_style_tensor))
         target_style_gram_matrices = {k: gram_matrix(v) for k, v in target_style_features.items()}
 
+    logs = []
+    counter = 0
+    start_time = time.time()
 
     for epoch in range(EPOCHS):
+        print(f"Epoch {epoch + 1}/{EPOCHS}:")
         for batch_index, content_batch in enumerate(loader):
             # Move content batch to device (cuda) if available >>>
             content_batch = content_batch.to(device)
@@ -98,7 +105,7 @@ def train(content_folder_path: str, style_img_path: str):
             # -------------------------------------------------------------------------
             # Mean squared error of the feature maps of the content img
             # and feature maps of the stylized/passed through transformer network img.
-            content_loss = F.mse_loss(content_features[CONTENT_LAYER], style_features[CONTENT_LAYER])
+            content_loss = CONTENT_WEIGHT * F.mse_loss(content_features[CONTENT_LAYER], style_features[CONTENT_LAYER])
 
             # -------------------------------------------------------------------------
             # Style loss >>>
@@ -109,31 +116,57 @@ def train(content_folder_path: str, style_img_path: str):
             for layer, gram_m in style_gram_matrices.items():
                 current_mse = F.mse_loss(gram_m, target_style_gram_matrices[layer])
                 style_loss += current_mse
-            style_loss /= len(style_gram_matrices)
+
+            style_loss = STYLE_WEIGHT * (style_loss / len(style_gram_matrices))
+            if len(style_gram_matrices) != 4:
+                print("ERROR style_loss should be divided by 4")
 
             # -------------------------------------------------------------------------
             # Total variation loss
             # -------------------------------------------------------------------------
-            tv_loss = compute_tv_loss(stylized_batch)
+            tv_loss = TV_WEIGHT * compute_tv_loss(stylized_batch)
 
             # -------------------------------------------------------------------------
             # Total loss
             # -------------------------------------------------------------------------
-            total_loss = CONTENT_WEIGHT * content_loss + STYLE_WEIGHT * style_loss + TV_WEIGHT * tv_loss
+            total_loss = content_loss + style_loss + tv_loss
 
             optimizer.zero_grad() # clear the old gradients
             total_loss.backward() # compute new gradients
             optimizer.step() # update new weights
 
+            counter += 1
+            curr_time_elapsed = (time.time() - start_time) / 60 # in minutes
             if batch_index % 100 == 0:
-                print(f"Epoch: {epoch + 1} | ",
-                      f"Content loss: {content_loss.item():.4f} | ",
-                      f"Style loss: {style_loss:.4f} | ",
-                      f"TV loss: {tv_loss.item():.4f} | ",
-                      f"Total loss: {total_loss.item():.4f}")
+                log = {
+                    "epoch": epoch + 1,
+                    "iteration": counter,
+                    "content_loss": content_loss.item(),
+                    "style_loss": style_loss,
+                    "tv_loss": tv_loss.item(),
+                    "total_loss": total_loss.item(),
+                    "time_minutes": curr_time_elapsed,
+                }
+                print(log)
+                logs.append(log)
 
+    style_img_name_stem = Path(style_img_name).stem
+    out_model_path = os.path.join("models", style_img_name_stem + "_model.pth")
+    torch.save(
+    {
+            "transformer_state_dict": transformer_network.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "hyperparameters": {
+                "learning_rate": LEARNING_RATE,
+                "content_weight": CONTENT_WEIGHT,
+                "style_weight": STYLE_WEIGHT,
+                "tv_weight": TV_WEIGHT
+            }
+        },
+        out_model_path
+    )
 
 
 
 if __name__ == "__main__":
-    train(content_folder_path="images/content/train2017", style_img_path="images/style/starry_night.jpg")
+    train(content_folder_path="images/content/train2017", style_img_name="starry_night.jpg")
