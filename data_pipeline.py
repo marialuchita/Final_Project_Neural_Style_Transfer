@@ -16,12 +16,10 @@ class TrainDataset(Dataset):
     """
     def __init__(self, folder_path: str):
         self.dataset_dir = Path(folder_path)
-        self.images_paths = [
-            path for path in self.dataset_dir.iterdir()
-            if path.is_file() and path.suffix.lower() in {".jpg", ".jpeg", ".png"}
-        ] #https://docs.python.org/3/library/pathlib.html
-
-        #print(self.images_paths)
+        #print("dataset init ", self.dataset_dir)
+        self.images_paths = sorted(self.dataset_dir.glob("*.jpg")) # use to read fast the paths. File format for coco dataset is .jpg
+        #print("number of paths",len(self.images_paths))
+        #print(self.images_paths[:10])
         self.transform = self.get_transform()
 
     def __len__(self) -> int:

@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class TransormNetwork(nn.Module):
+class TransformNetwork(nn.Module):
     def __init__(self) -> None:
         super().__init__()
         self.create_downsampling()
@@ -46,7 +46,7 @@ class TransormNetwork(nn.Module):
         return out_t
 
 class ConvolutionalLayer(nn.Module):
-    def __init__(self, in_ch: int, out_ch: int, kernel_size: int, stride: int, padding_mode="reflect") -> None:
+    def __init__(self, in_ch: int, out_ch: int, kernel_size: int, stride: int, padding_mode='reflect') -> None:
         super().__init__()
         padding = kernel_size // 2
         self.conv_layer = nn.Conv2d(
