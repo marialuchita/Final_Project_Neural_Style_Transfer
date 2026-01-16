@@ -43,6 +43,7 @@ class TransformNetwork(nn.Module):
         out_t = F.relu(self.in_up2(self.upsample2(out_t)))
 
         out_t = self.output_layer(out_t)
+        out_t = (torch.tanh(out_t) + 1) / 2 # try (torch.tanh(out_t) + 1) / 2
         return out_t
 
 class ConvolutionalLayer(nn.Module):
