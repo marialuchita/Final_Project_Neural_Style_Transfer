@@ -16,7 +16,7 @@ import torch.nn.functional as F
 BATCH_SIZE = 4
 WORKERS = 2
 LEARNING_RATE = 1e-3
-EPOCHS = 1
+EPOCHS = 100
 
 CONTENT_LAYER = "relu2_2"
 STYLE_LAYERS = "relu2_2"
@@ -60,6 +60,18 @@ def save_model(transformer: TransformNetwork, optimizer: Adam, folder_path: str,
         },
         out_model_path
     )
+def get_log(epoch: int, time_elapsed: float, losses_dict: dict[str, float], iteration: int) -> dict[str, float]:
+    log = {
+        "epoch": epoch,
+        "iteration": iteration,
+        "content_loss": losses_dict["content_loss"] / iteration,
+        "style_loss":  losses_dict["style_loss"] / iteration,
+        "tv_loss": losses_dict["tv_loss"] / iteration,
+        "total_loss": losses_dict["total_loss"] / iteration,
+        "time_minutes": time_elapsed,
+    }
+    print(log)
+    return log
 
 def train(content_folder_path: str, style_img_name: str):
     style_img_path = os.path.join("images/style", style_img_name)
@@ -97,12 +109,15 @@ def train(content_folder_path: str, style_img_name: str):
     logs = []
     iteration = 0
     start_time = time.time()
+    curr_time_elapsed = 0
 
     style_img_name_stem = Path(style_img_name).stem
     model_folder_path= os.path.join("models", style_img_name_stem)
     os.makedirs(model_folder_path, exist_ok=True)
     os.makedirs("logs", exist_ok=True)
     csv_name = os.path.join("logs", f"{style_img_name_stem}.csv")
+
+    sum_losses = {"content_loss": 0, "style_loss": 0, "tv_loss": 0, "total_loss": 0}
 
     for epoch in range(EPOCHS):
 
@@ -132,6 +147,7 @@ def train(content_folder_path: str, style_img_name: str):
             # Mean squared error of the feature maps of the content img
             # and feature maps of the stylized/passed through transformer network img.
             content_loss = CONTENT_WEIGHT * F.mse_loss(content_features[CONTENT_LAYER], style_features[CONTENT_LAYER])
+            sum_losses["content_loss"] += content_loss.item()
 
             # -------------------------------------------------------------------------
             # Style loss >>>
@@ -144,6 +160,8 @@ def train(content_folder_path: str, style_img_name: str):
                 style_loss += current_mse
 
             style_loss = STYLE_WEIGHT * (style_loss / len(style_gram_matrices))
+            sum_losses["style_loss"] += style_loss.item()
+
             if len(style_gram_matrices) != 4:
                 print("ERROR style_loss should be divided by 4")
 
@@ -151,11 +169,13 @@ def train(content_folder_path: str, style_img_name: str):
             # Total variation loss
             # -------------------------------------------------------------------------
             tv_loss = TV_WEIGHT * compute_tv_loss(stylized_batch)
+            sum_losses["tv_loss"] += tv_loss.item()
 
             # -------------------------------------------------------------------------
             # Total loss
             # -------------------------------------------------------------------------
             total_loss = content_loss + style_loss + tv_loss
+            sum_losses["total_loss"] += total_loss.item()
 
             optimizer.zero_grad() # clear the old gradients
             total_loss.backward() # compute new gradients
@@ -163,17 +183,14 @@ def train(content_folder_path: str, style_img_name: str):
 
             iteration += 1
             curr_time_elapsed = (time.time() - start_time) / 60 # in minutes
-            if batch_index % 1 == 0:
-                log = {
-                    "epoch": epoch + 1,
-                    "iteration": iteration,
-                    "content_loss": content_loss.item(),
-                    "style_loss": style_loss.item(),
-                    "tv_loss": tv_loss.item(),
-                    "total_loss": total_loss.item(),
-                    "time_minutes": curr_time_elapsed,
-                }
-                print(log)
+
+            if batch_index % 500 == 0 or (epoch == EPOCHS - 1 and batch_index == len(loader) - 1 ) :
+                log = get_log(
+                    epoch=epoch + 1,
+                    time_elapsed=curr_time_elapsed,
+                    losses_dict=sum_losses,
+                    iteration=iteration
+                )
                 logs.append(log)
 
             if iteration % 5000 == 0:
