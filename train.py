@@ -12,6 +12,7 @@ from data_pipeline import *
 from torch.utils.data import DataLoader
 from torch.optim import Adam
 import torch.nn.functional as F
+from datetime import datetime
 
 BATCH_SIZE = 4
 WORKERS = 2
@@ -19,9 +20,9 @@ LEARNING_RATE = 1e-4
 EPOCHS = 2
 
 CONTENT_LAYER = "relu2_2"
-CONTENT_WEIGHT = 1.0
-STYLE_WEIGHT = 1e5 # Johnson uses 1e5 to 4e5
-TV_WEIGHT = 1e-6 # 0 or 1e-6 to 1e-4
+CONTENT_WEIGHT = 1e0
+STYLE_WEIGHT = 4e5 # Johnson uses 1e5 to 4e5
+TV_WEIGHT = 0 # 0 or 1e-6 to 1e-4
 
 
 
@@ -43,13 +44,12 @@ def compute_tv_loss(t: torch.Tensor) -> torch.Tensor:
     tv_loss = horizontal_diff.mean() + vertical_diff.mean()
     return tv_loss
 
-def save_model(transformer: TransformNetwork, optimizer: Adam, folder_path: str, epoch: int, batch: int) -> None:
+def save_model(transformer: TransformNetwork, folder_path: str, epoch: int, batch: int) -> None:
 
     out_model_path = os.path.join(folder_path, f"model_{epoch}_{batch}.pth")
     torch.save(
     {
             "transformer_state_dict": transformer.state_dict(),
-            "optimizer_state_dict": optimizer.state_dict(),
             "hyperparameters": {
                 "learning_rate": LEARNING_RATE,
                 "content_weight": CONTENT_WEIGHT,
@@ -112,10 +112,15 @@ def train(content_folder_path: str, style_img_name: str):
     curr_time_elapsed = 0
 
     style_img_name_stem = Path(style_img_name).stem
-    model_folder_path= os.path.join("models", style_img_name_stem)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    model_folder_path = os.path.join(
+        "models",
+        f"{timestamp}_{style_img_name_stem}"
+    )
     os.makedirs(model_folder_path, exist_ok=True)
     os.makedirs("logs", exist_ok=True)
-    csv_name = os.path.join("logs", f"{style_img_name_stem}.csv")
+    csv_logs = os.path.join("logs", f"{timestamp}_{style_img_name_stem}.csv")
+    csv_weights = os.path.join("logs", f"{timestamp}_{style_img_name_stem}_weights.csv")
 
     for epoch in range(EPOCHS):
 
@@ -195,10 +200,9 @@ def train(content_folder_path: str, style_img_name: str):
                 print(log)
                 logs.append(log)
 
-            if batch_index % 500 == 0 or (epoch == EPOCHS - 1 and batch_index == len(loader) - 1 ):
+            if batch_index % 3000 == 0 or (epoch == EPOCHS - 1 and batch_index == len(loader) - 1 ):
                 save_model(
                     transformer=transformer_network,
-                    optimizer=optimizer,
                     folder_path=model_folder_path,
                     epoch=epoch + 1,
                     batch=batch_index,
@@ -209,13 +213,23 @@ def train(content_folder_path: str, style_img_name: str):
         raise ValueError("No logs were saved")
 
     columns_names = logs[0].keys()
-    with open(csv_name, mode='w', newline='') as file:
+    with open(csv_logs, mode='w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=columns_names)
         writer.writeheader()
         writer.writerows(logs)
 
+    weights = {
+        "content_weight": CONTENT_WEIGHT,
+        "style_weight": STYLE_WEIGHT,
+        "tv_weight": TV_WEIGHT,
+    }
+
+    with open(csv_weights, mode='w', newline='') as file2:
+        writer = csv.DictWriter(file2, fieldnames=weights.keys())
+        writer.writeheader()
+        writer.writerow(weights)
 
 
 
 if __name__ == "__main__":
-    train(content_folder_path="images/coco/train2017", style_img_name="starry_night.jpg")
+    train(content_folder_path="images/coco/train2017", style_img_name="circles_paint.jpg")
