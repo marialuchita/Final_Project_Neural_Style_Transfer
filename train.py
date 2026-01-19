@@ -21,8 +21,8 @@ EPOCHS = 2
 
 CONTENT_LAYER = "relu2_2"
 CONTENT_WEIGHT = 1e0
-STYLE_WEIGHT = 4e5 # Johnson uses 1e5 to 4e5
-TV_WEIGHT = 0 # 0 or 1e-6 to 1e-4
+STYLE_WEIGHT = 1e5 # Johnson uses 1e5 to 4e5
+TV_WEIGHT = 1e-6# 0 or 1e-6 to 1e-4
 
 
 
