@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from torchvision import models
+from torchvision import models, transforms
 
 from typing import Union, List, Tuple
 
@@ -79,12 +79,12 @@ class VGGDecoder(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.decoder(x)
 
-# Fixed
-class AdaINLayer(nn.Module):
-    def __init__(self, encoder: VGGEncoder, decoder: VGGDecoder):
+# Only the decoder is trainable
+class StyleTransferNet(nn.Module):
+    def __init__(self):
         super().__init__()
-        self.encoder = encoder
-        self.decoder = decoder
+        self.encoder = VGGEncoder()
+        self.decoder = VGGDecoder()
 
     def forward(self, content_img: torch.Tensor, style_img: torch.Tensor, alpha: float = 1.0) -> torch.Tensor:
         """
@@ -98,7 +98,7 @@ class AdaINLayer(nn.Module):
         content_features = self.encoder(content_img)
         style_features = self.encoder(style_img)
 
-        target_f = AdaINLayer.adain(content_features, style_features)
+        target_f = StyleTransferNet.adain(content_features, style_features)
 
         # Style - content interpolation
         target_f = alpha * target_f + (1 - alpha) * content_features
@@ -119,7 +119,7 @@ class AdaINLayer(nn.Module):
     @staticmethod
     def adain(content_features: torch.Tensor, style_features: torch.Tensor) -> torch.Tensor:
 
-        content_mean, content_std = AdaINLayer.calc_statistics(content_features)
-        style_mean, style_std = AdaINLayer.calc_statistics(style_features)
+        content_mean, content_std = StyleTransferNet.calc_statistics(content_features)
+        style_mean, style_std = StyleTransferNet.calc_statistics(style_features)
         target_features = style_std * (content_features - content_mean) / content_std + style_mean
         return target_features
