@@ -6,7 +6,7 @@ from typing import List
 from torchvision import models, transforms
 from torch.utils.data import DataLoader
 
-from style_transfer_network import StyleTransferNet, VGGEncoder, VGGDecoder
+from style_transfer_network import *
 from data_pipeline import TrainingDataset
 
 LEARNING_RATE = 1e-4
@@ -22,8 +22,8 @@ def compute_content_loss(content_features: torch.Tensor, target_features: torch.
     return F.mse_loss(content_features, target_features)
 
 def compute_style_loss(style_features:  torch.Tensor, target_features: torch.Tensor) -> torch.Tensor:
-    style_mean, style_std = StyleTransferNet.calc_statistics(style_features)
-    target_mean, target_std = StyleTransferNet.calc_statistics(target_features)
+    style_mean, style_std = calc_statistics(style_features)
+    target_mean, target_std = calc_statistics(target_features)
     return F.mse_loss(style_mean, target_mean) + F.mse_loss(style_std, target_std)
     # style_loss = torch.tensor(0.0, device=generated_img_features[0].device)
     # features_zip = zip(generated_img_features, style_img_features)
@@ -61,6 +61,17 @@ def train():
     )
 
     for epoch in range(EPOCHS):
+        total_loss = 0
+        for batch_idx, (content_image, style_image) in enumerate(loader):
+            content_image = content_image.to(device)
+            style_image = style_image.to(device)
+
+            # pass through AdaIN Network
+
+
+            # compute losses
+
+
 
 
 

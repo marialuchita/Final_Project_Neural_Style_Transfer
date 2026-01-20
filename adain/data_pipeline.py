@@ -10,7 +10,8 @@ from typing import Tuple
 
 VGG_MEAN = (0.485, 0.456, 0.406)
 VGG_STD = (0.229, 0.224, 0.225)
-IMG_SIZE = 256
+IMG_SIZE = 512
+CROP_SIZE = 256
 FLIP_PROB = 0.5
 
 class TrainingDataset(Dataset):
@@ -21,8 +22,8 @@ class TrainingDataset(Dataset):
         self.style_imgs_paths = sorted(self.style_dataset_path.glob("*.jpg"))
 
         transform = transforms.Compose([
-            transforms.Resize(IMG_SIZE * 2),
-            transforms.RandomCrop(IMG_SIZE),
+            transforms.Resize(IMG_SIZE),
+            transforms.RandomCrop(CROP_SIZE),
             transforms.RandomHorizontalFlip(p=FLIP_PROB),
             transforms.ToTensor(),
             transforms.Normalize(VGG_MEAN, VGG_STD)])

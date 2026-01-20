@@ -79,7 +79,7 @@ class VGGDecoder(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.decoder(x)
 
-# Only the decoder is trainable
+
 class StyleTransferNet(nn.Module):
     def __init__(self):
         super().__init__()
@@ -98,28 +98,28 @@ class StyleTransferNet(nn.Module):
         content_features = self.encoder(content_img)
         style_features = self.encoder(style_img)
 
-        target_f = StyleTransferNet.adain(content_features, style_features)
+        target_f = adain(content_features, style_features)
 
         # Style - content interpolation
         target_f = alpha * target_f + (1 - alpha) * content_features
 
         return self.decoder(target_f)
 
+# Helpers
+def calc_statistics(features: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+    epsilon = 1e-5
+    batch_size, channels, _, _ = features.shape
+    f = features.view(batch_size, channels, -1)
+    mean = f.mean(dim=2).view(batch_size, channels, 1, 1)
+    variance = f.var(dim=2, unbiased=False).view(batch_size, channels, 1, 1)
+    std = (epsilon + variance).sqrt()
+    return mean, std
 
-    @staticmethod
-    def calc_statistics(features: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-        epsilon = 1e-5
-        batch_size, channels, _, _ = features.shape
-        f = features.view(batch_size, channels, -1)
-        mean = f.mean(dim=2).view(batch_size, channels, 1, 1)
-        variance = f.var(dim=2, unbiased=False).view(batch_size, channels, 1, 1)
-        std = (epsilon + variance).sqrt()
-        return mean, std
 
-    @staticmethod
-    def adain(content_features: torch.Tensor, style_features: torch.Tensor) -> torch.Tensor:
+def adain(content_features: torch.Tensor, style_features: torch.Tensor) -> torch.Tensor:
 
-        content_mean, content_std = StyleTransferNet.calc_statistics(content_features)
-        style_mean, style_std = StyleTransferNet.calc_statistics(style_features)
-        target_features = style_std * (content_features - content_mean) / content_std + style_mean
-        return target_features
+    content_mean, content_std = calc_statistics(content_features)
+    style_mean, style_std = calc_statistics(style_features)
+    target_features = style_std * (content_features - content_mean) / content_std + style_mean
+    return target_features
+
