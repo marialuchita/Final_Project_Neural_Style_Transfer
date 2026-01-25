@@ -21,7 +21,7 @@ class TrainingDataset(Dataset):
         self.content_imgs_paths = sorted(self.content_dataset_path.glob("*.jpg"))
         self.style_imgs_paths = sorted(self.style_dataset_path.glob("*.jpg"))
 
-        transform = transforms.Compose([
+        self.transform = transforms.Compose([
             transforms.Resize(IMG_SIZE),
             transforms.RandomCrop(CROP_SIZE),
             transforms.RandomHorizontalFlip(p=FLIP_PROB),
