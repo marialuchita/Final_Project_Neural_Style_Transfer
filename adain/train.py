@@ -20,11 +20,8 @@ EPOCHS = 2
 BATCH_SIZE = 4
 WORKERS = 6
 
-# COCO_PATH = "../images/coco/train2017"
-# WIKI_PATH = ""
-
-COCO_PATH = "../images/content/train2017"
-WIKI_PATH = "../images/style"
+COCO_PATH = "../images/coco/train2017"
+WIKI_PATH = "images/wikiart"
 
 MODELS_PATH = "models"
 LOGS_PATH = "logs"
@@ -43,11 +40,11 @@ def compute_style_loss(style_features:  torch.Tensor, target_features: torch.Ten
     target_mean, target_std = calc_statistics(target_features)
     return F.mse_loss(style_mean, target_mean) + F.mse_loss(style_std, target_std)
 
-def save_model(network: StyleTransferNet, folder_path: str, epoch: int, batch: int) -> None:
+def save_model(module: nn.Module, folder_path: str, epoch: int, batch: int) -> None:
 
     out_model_path = os.path.join(folder_path, f"model_{epoch}_{batch}.pth")
     torch.save(
-        {"state_dict": network.state_dict()},
+        {"state_dict": module.state_dict()},
         out_model_path
     )
 
@@ -78,6 +75,7 @@ def train():
     optimizer = Adam(network.decoder.parameters(), lr=LEARNING_RATE)
 
     # TrainingDataset and DataLoader
+
     dataset = TrainingDataset(COCO_PATH, WIKI_PATH)
     loader = DataLoader(
         dataset,
@@ -115,7 +113,9 @@ def train():
             # features of decoder output and style img
             decoder_output_cont_f = network.encoder(decoder_output)
             decoder_output_style_f = network.encoder(decoder_output, return_all=True)
-            style_features = network.encoder(style_image, return_all=True)
+
+            with torch.no_grad():
+                style_features = network.encoder(style_image, return_all=True)
 
             # COMPUTE LOSSES:
             # content loss
@@ -144,7 +144,7 @@ def train():
                     "batch": batch_idx,
                     "content_loss": content_loss.item(),
                     "style_loss": style_loss.item(),
-                    "total_loss": total_loss.item(),
+                    "total_loss": current_loss.item(),
                     "time_minutes": curr_time_elapsed,
                 }
                 print(log)
@@ -152,7 +152,7 @@ def train():
 
             if batch_idx % 3000 == 0 or (epoch == EPOCHS - 1 and batch_idx == len(loader) - 1 ):
                 save_model(
-                    network=network.decoder,
+                    module=network.decoder,
                     folder_path=MODELS_PATH,
                     epoch=epoch + 1,
                     batch=batch_idx,
