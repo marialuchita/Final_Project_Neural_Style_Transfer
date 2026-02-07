@@ -1,18 +1,20 @@
-.venv
-venv
-**/__pycache__
-.venvw
-venvw
-.git
+# Python virtual environments
+.venv/
+venv/
+.venvw/
+venvw/
+
+# Python cache
+**/__pycache__/
+
+# Git & IDE
+.git/
 .idea/
 
-
-
-00_input_data
-logs
-models
-output_data
-
-save
-stable_diff
-
+# Project data & outputs
+00_input_data/
+logs/
+models/
+output_data/
+save/
+stable_diff/
