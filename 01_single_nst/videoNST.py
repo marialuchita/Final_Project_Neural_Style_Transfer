@@ -1,24 +1,21 @@
 import torch
-from data_pipeline import process_image, process_frame, tensor_to_frame
+# from data_pipeline import process_image, process_frame, tensor_to_frame
 import cv2 as cv
-from style_transfer_network import StyleTransferNet
+from transform_network import TransformNetwork
 import os
 from datetime import datetime
+from data_pipeline import process_frame, tensor_to_frame
 
-ALPHA = 1.0
+
 
 @torch.no_grad()
-def stylise_video(video_path: str, style_img_path: str, model_path:str, output_folder:str) -> None:
+def stylise_video(video_path: str, model_path:str, output_folder:str) -> None:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("device: ", device)
 
     os.makedirs(output_folder, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_path = os.path.join(output_folder, f"{timestamp}.mp4")
-
-    print(output_path)
-    # Style image
-    style_img = process_image(style_img_path, device)
 
     # Video
     video = cv.VideoCapture(video_path)
@@ -34,9 +31,9 @@ def stylise_video(video_path: str, style_img_path: str, model_path:str, output_f
         raise RuntimeError("Could not open writer")
     
     # Load model
-    model = torch.load(model_path, map_location=device)
-    network = StyleTransferNet().to(device).eval()
-    network.decoder.load_state_dict(model["state_dict"], strict=True)
+    model = TransformNetwork().to(device).eval()
+    checkpoint = torch.load(model_path, map_location=device)
+    model.load_state_dict(checkpoint["transformer_state_dict"], strict=True)
 
 
     while True:
@@ -44,14 +41,12 @@ def stylise_video(video_path: str, style_img_path: str, model_path:str, output_f
         if not status:
             break
         content_frame = process_frame(frame, device)
-
-        output_network = network(content_img=content_frame, style_img=style_img, alpha=ALPHA)
-        # denormalize and save the output
+        output_network = model(content_frame)[0]  
         stylised_frame = tensor_to_frame(output_network)
-        cv.imshow("Stylised", stylised_frame)
+ 
         writer.write(stylised_frame)
-        if cv.waitKey(1) == ord('q'):
-            break
+        # if cv.waitKey(1) == ord('q'):
+        #     break
     
     video.release()
     writer.release()
@@ -59,13 +54,11 @@ def stylise_video(video_path: str, style_img_path: str, model_path:str, output_f
 
 def main():
  
-    content_video_path = "../00_input_data/videos/Traffic_Laramie_1.mp4"
-    style_img_path = "../00_input_data/images/02_style/starry_night.jpg"
-    model_path = "models/model_4_29570.pth"
+    content_video_path = "../00_input_data/videos/119799-719443737_tiny.mp4"
+    model_path = "models/20260203_132444_circles_paint/model_2_29570.pth"
     output_folder = "output_data/videos"
     stylise_video(
         video_path=content_video_path,
-        style_img_path=style_img_path,
         model_path=model_path,
         output_folder=output_folder
     )

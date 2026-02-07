@@ -3,7 +3,7 @@
 venv/
 .venvw/
 venvw/
-
+requirementsW.txt
 # Python cache
 **/__pycache__/
 
@@ -18,3 +18,5 @@ models/
 output_data/
 save/
 stable_diff/
+
+liveVideoNST.py
