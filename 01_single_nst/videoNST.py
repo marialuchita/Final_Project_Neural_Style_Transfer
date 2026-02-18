@@ -1,10 +1,10 @@
 import torch
-# from data_pipeline import process_image, process_frame, tensor_to_frame
+# from data_pipeline import img_to_tensor, frame_to_tensor, tensor_to_frame
 import cv2 as cv
 from transform_network import TransformNetwork
 import os
 from datetime import datetime
-from data_pipeline import process_frame, tensor_to_frame
+from data_pipeline import frame_to_tensor, tensor_to_frame
 
 
 
@@ -40,7 +40,7 @@ def stylise_video(video_path: str, model_path:str, output_folder:str) -> None:
         status, frame = video.read()
         if not status:
             break
-        content_frame = process_frame(frame, device)
+        content_frame = frame_to_tensor(frame, device)
         output_network = model(content_frame)[0]  
         stylised_frame = tensor_to_frame(output_network)
  

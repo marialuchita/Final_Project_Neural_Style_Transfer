@@ -2,7 +2,7 @@ import os
 import torch 
 from transform_network import TransformNetwork
 from datetime import datetime
-from data_pipeline import process_image, save_as_image
+from data_pipeline import img_to_tensor, save_as_image
 
 CONTENT_IMAGE = "../00_input_data/images/01_content/puppy.jpg"
 MODEL_PATH    = "models/20260204_125032_sunset/model_1_29570.pth"   # <-- update to your new saved name
@@ -20,7 +20,7 @@ def main():
     checkpoint = torch.load(MODEL_PATH, map_location=device)
     model.load_state_dict(checkpoint["transformer_state_dict"], strict=True)
 
-    img = process_image(CONTENT_IMAGE, device)
+    img = img_to_tensor(CONTENT_IMAGE, device)
     stylised_output = model(img)[0]  
 
  
