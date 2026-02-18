@@ -25,7 +25,7 @@ def main():
 
  
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    out_dir = f"{OUTPUT_IMAGE}/{timestamp}.jpg"
+    out_dir = os.path.join(OUTPUT_IMAGE, f"{timestamp}.jpg")
     os.makedirs(os.path.dirname(out_dir), exist_ok=True)
     stylised_img = tensor_to_img(stylised_output)
     save_img(stylised_img, out_dir)
