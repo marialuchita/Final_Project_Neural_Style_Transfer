@@ -1,11 +1,11 @@
 import torch
-from data_pipeline import process_image, process_frame, tensor_to_frame
+from data_pipeline import get_img, img_to_tensor, tensor_to_img, get_img_from_frame
 import cv2 as cv
 from style_transfer_network import StyleTransferNet
 import os
 from datetime import datetime
 
-ALPHA = 1.0
+ALPHA = 0.5
 
 @torch.no_grad()
 def stylise_video(video_path: str, style_img_path: str, model_path:str, output_folder:str) -> None:
@@ -16,9 +16,8 @@ def stylise_video(video_path: str, style_img_path: str, model_path:str, output_f
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_path = os.path.join(output_folder, f"{timestamp}.mp4")
 
-    print(output_path)
     # Style image
-    style_img = process_image(style_img_path, device)
+    style_img = img_to_tensor(get_img(style_img_path), device)
 
     # Video
     video = cv.VideoCapture(video_path)
@@ -43,15 +42,15 @@ def stylise_video(video_path: str, style_img_path: str, model_path:str, output_f
         status, frame = video.read()
         if not status:
             break
-        content_frame = process_frame(frame, device)
+        content_frame = img_to_tensor(get_img_from_frame(frame), device)
 
         output_network = network(content_img=content_frame, style_img=style_img, alpha=ALPHA)
-        # denormalize and save the output
-        stylised_frame = tensor_to_frame(output_network)
-        cv.imshow("Stylised", stylised_frame)
+        # save the output
+        stylised_frame = tensor_to_img(output_network)
+
         writer.write(stylised_frame)
-        if cv.waitKey(1) == ord('q'):
-            break
+        # if cv.waitKey(1) == ord('q'):
+        #     break
     
     video.release()
     writer.release()
@@ -59,7 +58,7 @@ def stylise_video(video_path: str, style_img_path: str, model_path:str, output_f
 
 def main():
  
-    content_video_path = "../00_input_data/videos/Traffic_Laramie_1.mp4"
+    content_video_path = "../00_input_data/videos/119799-719443737_tiny.mp4"
     style_img_path = "../00_input_data/images/02_style/starry_night.jpg"
     model_path = "models/model_4_29570.pth"
     output_folder = "output_data/videos"

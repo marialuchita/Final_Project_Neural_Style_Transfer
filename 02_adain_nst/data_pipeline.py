@@ -53,58 +53,107 @@ class TrainingDataset(Dataset):
             transforms.ToTensor(),
             transforms.Normalize(VGG_MEAN, VGG_STD)])
 
-def process_image(path: str, device: torch.device) -> torch.Tensor:
-    transform = get_transform()
-    img = Image.open(path).convert("RGB")
-    tr_img = transform(img)
-    output = tr_img.unsqueeze(0).to(device) # (1, 3, H, W)
-    return output
+# def process_image(path: str, device: torch.device) -> torch.Tensor:
+#     transform = get_transform()
+#     img = Image.open(path).convert("RGB")
+#     tr_img = transform(img)
+#     output = tr_img.unsqueeze(0).to(device) # (1, 3, H, W)
+#     return output
 
-def process_frame(frame: np.ndarray, device: torch.device) -> torch.Tensor:
-    """
-    Converts a single video frame into a tensor for the trained model.
-    :param frame:
-    :param device:
-    :return:
-    """
-    transform = get_transform()
+
+# def process_frame(frame: np.ndarray, device: torch.device) -> torch.Tensor:
+#     """
+#     Converts a single video frame into a tensor for the trained model.
+#     :param frame:
+#     :param device:
+#     :return:
+#     """
+#     transform = get_transform()
+#     frame_rgb = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+#     img = Image.fromarray(frame_rgb)
+#     tr_img = transform(img)
+#     output = tr_img.unsqueeze(0).to(device) # (1, 3, H, W)
+#     return output
+
+# def get_transform() -> transforms.Compose:
+#     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(VGG_MEAN, VGG_STD)])
+#     return transform
+
+# def denormalize(img: torch.Tensor) -> torch.Tensor:
+#     if img.dim() == 3:
+#         img = img.unsqueeze(0)
+#     std = torch.tensor(VGG_STD, device=img.device).view(1, 3, 1, 1)
+#     mean = torch.tensor(VGG_MEAN, device=img.device).view(1, 3, 1, 1)
+#     output = (img * std + mean).clamp(0, 1)
+#     return output
+
+# def save_as_image(img: torch.Tensor, output_path: str) -> None:
+#     if img.dim() == 4:
+#         img = img[0]
+#     y = img.clamp(0.0, 1.0).cpu().numpy()
+#     y = (y * 255).astype("uint8")
+#     y = np.moveaxis(y, 0, 2) # CHW to HWC
+#     os.makedirs(os.path.dirname(output_path), exist_ok=True)
+#     cv.imwrite(output_path, y[:, :, ::-1]) # RGB to BGR
+
+# def tensor_to_frame(img: torch.Tensor) -> np.ndarray:
+#     if img.dim() == 4:
+#         img = img[0]
+#     y = img.clamp(0.0, 1.0).cpu().numpy()
+#     y = (y * 255).astype("uint8")
+#     y = np.moveaxis(y, 0, 2) # CHW to HWC for openCV
+#     y = y[:, :, ::-1] # RGB to BGR  for openCV
+#     return y
+# def denormalize(t: torch.Tensor):
+#     mean = torch.tensor(VGG_MEAN, device=t.device).view(3, 1, 1)
+#     std = torch.tensor(VGG_STD, device=t.device).view(3, 1, 1)
+#     y = (t * std + mean).clamp(0.0, 1.0).cpu().numpy()
+#     y = (y * 255).astype("uint8")
+#     return y
+
+# def tensor_to_img(t: torch.Tensor) -> np.ndarray:
+#     if t.dim() == 4:
+#         t = t[0]
+#     output = denormalize(t)
+#     output_img = np.moveaxis(output, 0, 2) # CHW to HWC for openCV
+#     output_img = output_img[:, :, ::-1] # RGB to BGR  for openCV
+#     return output_img
+# ##################################################################################################
+# Invert
+def get_img(path: str) -> Image.Image:
+    img = Image.open(path).convert("RGB")
+    return img
+
+def get_img_from_frame(frame: np.ndarray) -> Image.Image:
     frame_rgb = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
     img = Image.fromarray(frame_rgb)
+    return img
+
+def img_to_tensor(img: Image.Image, device: torch.device) -> torch.Tensor:
+    transform = get_transform()
     tr_img = transform(img)
     output = tr_img.unsqueeze(0).to(device) # (1, 3, H, W)
     return output
 
-def get_transform(img_size: int = IMG_SIZE) -> transforms.Compose:
-    transform = transforms.Compose([
-        # transforms.Resize(256),
-        transforms.ToTensor(),
-        transforms.Normalize(VGG_MEAN, VGG_STD)])
+def get_transform() -> transforms.Compose:
+    # transforms.Resize(IMG_SIZE),
+    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(VGG_MEAN, VGG_STD)])
     return transform
 
-def denormalize(img: torch.Tensor) -> torch.Tensor:
-    if img.dim() == 3:
-        img = img.unsqueeze(0)
-    std = torch.tensor(VGG_STD, device=img.device).view(1, 3, 1, 1)
-    mean = torch.tensor(VGG_MEAN, device=img.device).view(1, 3, 1, 1)
-    output = (img * std + mean).clamp(0, 1)
-    return output
+# Revert
 
-def save_as_image(img: torch.Tensor, output_path: str) -> None:
-    if img.dim() == 4:
-        img = img[0]
-    y = img.clamp(0.0, 1.0).cpu().numpy()
-    y = (y * 255).astype("uint8")
-    y = np.moveaxis(y, 0, 2) # CHW to HWC
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    cv.imwrite(output_path, y[:, :, ::-1]) # RGB to BGR
+def save_img(img: np.ndarray, output_path: str) -> None:
+    ok = cv.imwrite(output_path, img)
+    if not ok:
+        raise RuntimeError(f"cv.imwrite failed for: {output_path}")
+    print("Saved:", output_path)
 
-def tensor_to_frame(img: torch.Tensor) -> np.ndarray:
-    if img.dim() == 4:
-        img = img[0]
-    y = img.clamp(0.0, 1.0).cpu().numpy()
+
+def tensor_to_img(t: torch.Tensor) -> np.ndarray:
+    if t.dim() == 4:
+        t = t[0]
+    y = t.clamp(0.0, 1.0).cpu().numpy()
     y = (y * 255).astype("uint8")
     y = np.moveaxis(y, 0, 2) # CHW to HWC for openCV
-    y = y[:, :, ::-1] # RGB to BGR  for openCV
-    return y
-
-
+    output_img = y[:, :, ::-1] # RGB to BGR  for openCV
+    return output_img
