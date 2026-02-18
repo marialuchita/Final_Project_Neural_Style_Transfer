@@ -45,12 +45,7 @@ class TrainDataset(Dataset):
             transforms.Normalize(VGG_MEAN, VGG_STD)])
         return t
 
-# def normalize_for_vgg(t: torch.Tensor) -> torch.Tensor:
-#     # t should have the shape (N, 3, H, W)
-#     t_mean = t.new_tensor(VGG_MEAN).view(1, 3, 1, 1) # N - batch size, C - number of channels (RGB), H - height, W - width
-#     t_std = t.new_tensor(VGG_STD).view(1, 3, 1, 1)
-#     out_t = (t - t_mean) / t_std
-#     return out_t
+
 
 def gram_matrix(t: torch.Tensor) -> torch.Tensor:
     """
@@ -74,7 +69,7 @@ def get_img_from_frame(frame: np.ndarray) -> Image.Image:
     img = Image.fromarray(frame_rgb)
     return img
 
-def to_tensor(img: Image.Image, device: torch.device) -> torch.Tensor:
+def img_to_tensor(img: Image.Image, device: torch.device) -> torch.Tensor:
     transform = get_transform()
     tr_img = transform(img)
     output = tr_img.unsqueeze(0).to(device) # (1, 3, H, W)
@@ -85,25 +80,24 @@ def get_transform() -> transforms.Compose:
     return transform
 
 # Revert
-def save_as_image(y: torch.Tensor, output_path: str) -> None:
-    mean = torch.tensor(VGG_MEAN, device=y.device).view(3, 1, 1)
-    std = torch.tensor(VGG_STD, device=y.device).view(3, 1, 1)
-    y = (y * std + mean).clamp(0.0, 1.0)
-    y = y.cpu().numpy()
-    y = (y * 255).astype(np.uint8)
-    y = np.moveaxis(y, 0, 2)  # CHW -> HWC (RGB)
-    cv.imwrite(output_path, y[:, :, ::-1])  # RGB -> BGR
+
+def save_img(img: np.ndarray, output_path: str) -> None:
+    ok = cv.imwrite(output_path, img)
+    if not ok:
+        raise RuntimeError(f"cv.imwrite failed for: {output_path}")
     print("Saved:", output_path)
 
-def tensor_to_frame(img: torch.Tensor) -> np.ndarray:
-
-    if img.dim() == 4:
-        img = img[0]
-
-    mean = torch.tensor(VGG_MEAN, device=img.device).view(3, 1, 1)
-    std = torch.tensor(VGG_STD, device=img.device).view(3, 1, 1)
-    y = (img * std + mean).clamp(0.0, 1.0).cpu().numpy()
+def denormalize(t: torch.Tensor):
+    mean = torch.tensor(VGG_MEAN, device=t.device).view(3, 1, 1)
+    std = torch.tensor(VGG_STD, device=t.device).view(3, 1, 1)
+    y = (t * std + mean).clamp(0.0, 1.0).cpu().numpy()
     y = (y * 255).astype("uint8")
-    y = np.moveaxis(y, 0, 2) # CHW to HWC for openCV
-    y = y[:, :, ::-1] # RGB to BGR  for openCV
     return y
+
+def tensor_to_img(t: torch.Tensor) -> np.ndarray:
+    if t.dim() == 4:
+        t = t[0]
+    output = denormalize(t)
+    output_img = np.moveaxis(output, 0, 2) # CHW to HWC for openCV
+    output_img = output_img[:, :, ::-1] # RGB to BGR  for openCV
+    return output_img

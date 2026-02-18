@@ -1,11 +1,9 @@
 import torch
-# from data_pipeline import img_to_tensor, frame_to_tensor, tensor_to_frame
 import cv2 as cv
 from transform_network import TransformNetwork
 import os
 from datetime import datetime
-from data_pipeline import frame_to_tensor, tensor_to_frame
-
+from data_pipeline import get_img_from_frame, img_to_tensor, tensor_to_img
 
 
 @torch.no_grad()
@@ -40,9 +38,11 @@ def stylise_video(video_path: str, model_path:str, output_folder:str) -> None:
         status, frame = video.read()
         if not status:
             break
-        content_frame = frame_to_tensor(frame, device)
+
+        
+        content_frame = img_to_tensor(get_img_from_frame(frame), device)
         output_network = model(content_frame)[0]  
-        stylised_frame = tensor_to_frame(output_network)
+        stylised_frame = tensor_to_img(output_network)
  
         writer.write(stylised_frame)
         # if cv.waitKey(1) == ord('q'):

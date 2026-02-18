@@ -1,10 +1,9 @@
 import torch
-# from data_pipeline import img_to_tensor, frame_to_tensor, tensor_to_frame
 import cv2 as cv
 from transform_network import TransformNetwork
 import os
 from datetime import datetime
-from data_pipeline import get_img_from_frame, to_tensor, tensor_to_frame
+from data_pipeline import get_img_from_frame, img_to_tensor, tensor_to_img
 import numpy as np
 import time
 
@@ -49,7 +48,7 @@ def process_frame(frame, device, short_size=512):
     h, w = frame.shape[:2]
     new_h, new_w = get_resized_hw(h, w, short_size)
     resized_frame = cv.resize(frame, (new_w, new_h), interpolation=cv.INTER_AREA)
-    tensor = to_tensor(get_img_from_frame(resized_frame), device)
+    tensor = img_to_tensor(get_img_from_frame(resized_frame), device)
     return resized_frame, tensor, new_h, new_w
 
 @torch.no_grad()
@@ -92,7 +91,7 @@ def stylise_video(video_path: str, model_path:str, output_folder:str) -> None:
         content_frame, content_tensor, new_h, new_w = process_frame(frame, device)
         
         output_network = model(content_tensor)[0]  
-        stylised_frame = tensor_to_frame(output_network)
+        stylised_frame = tensor_to_img(output_network)
         stylised_h, stylised_w = stylised_frame.shape[:2]
 
         if (stylised_h, stylised_w) != (new_h, new_w):
