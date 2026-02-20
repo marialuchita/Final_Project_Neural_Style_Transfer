@@ -17,6 +17,5 @@ logs/
 models/
 output_data/
 save/
-stable_diff/
 
 liveVideoNST.py
