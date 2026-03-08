@@ -5,7 +5,7 @@ from datetime import datetime
 from data_pipeline import img_to_tensor, save_img, tensor_to_img, get_img
 
 CONTENT_IMAGE = "../00_input_data/images/01_content/puppy.jpg"
-MODEL_PATH    = "models/20260204_125032_sunset/model_1_29570.pth"   # <-- update to your new saved name
+MODEL_PATH    = "models/20260203_132444_circles_paint/model_2_29570.pth"   # <-- update to your new saved name
 OUTPUT_IMAGE  = "output_data/images"
 USE_CUDA      = True
 VGG_MEAN = (0.485, 0.456, 0.406)
