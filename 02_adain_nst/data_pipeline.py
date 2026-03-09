@@ -157,3 +157,15 @@ def tensor_to_img(t: torch.Tensor) -> np.ndarray:
     y = np.moveaxis(y, 0, 2) # CHW to HWC for openCV
     output_img = y[:, :, ::-1] # RGB to BGR  for openCV
     return output_img
+
+def resize_img(img: Image.Image, target_size: int = 853) -> Image.Image:
+    w, h = img.size
+
+    if w < h:
+        new_w = target_size
+        new_h = int(h * target_size / w)
+    else:
+        new_h = target_size
+        new_w = int(w * target_size / h)
+
+    return img.resize((new_w, new_h), Image.LANCZOS)
