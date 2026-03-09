@@ -12,7 +12,7 @@ requirementsW.txt
 .idea/
 
 # Project data & outputs
-00_input_data/
+# 00_input_data/
 logs/
 models/
 output_data/
@@ -21,3 +21,7 @@ save/
 liveVideoNST.py
 
 .ipynb_checkpoints
+
+old/
+
+visualisation.py
