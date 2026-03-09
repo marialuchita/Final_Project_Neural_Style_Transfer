@@ -5,7 +5,6 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 import numpy as np
 import cv2 as cv
-from PIL import Image
 
 VGG_MEAN = (0.485, 0.456, 0.406)
 VGG_STD = (0.229, 0.224, 0.225)
@@ -101,3 +100,15 @@ def tensor_to_img(t: torch.Tensor) -> np.ndarray:
     output_img = np.moveaxis(output, 0, 2) # CHW to HWC for openCV
     output_img = output_img[:, :, ::-1] # RGB to BGR  for openCV
     return output_img
+
+def resize_img(img: Image.Image, target_size: int = 853) -> Image.Image:
+    w, h = img.size
+
+    if w < h:
+        new_w = target_size
+        new_h = int(h * target_size / w)
+    else:
+        new_h = target_size
+        new_w = int(w * target_size / h)
+
+    return img.resize((new_w, new_h), Image.LANCZOS)
