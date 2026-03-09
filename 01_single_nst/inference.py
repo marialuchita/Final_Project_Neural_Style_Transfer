@@ -1,8 +1,8 @@
 import os
 import torch 
 from transform_network import TransformNetwork
-from datetime import datetime
 from data_pipeline import img_to_tensor, save_img, tensor_to_img, get_img, resize_img
+
 STYLES = ["circles", "starry_night", "sunset"]
 CONTENT_IMAGES_PATH = f"../00_input_data/images/01_content"
 OUTPUT_IMAGE_FOLDER  = "output_data/images"
