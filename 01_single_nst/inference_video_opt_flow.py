@@ -36,7 +36,7 @@ def warp_prev(img_bgr: np.ndarray, flow: np.ndarray) -> np.ndarray:
     return cv.remap(img_bgr, map_x, map_y, interpolation=cv.INTER_LINEAR, borderMode=cv.BORDER_REFLECT)
 
 def blend_with_current_stylisation(current_style_bgr: np.ndarray, prev_warp_bgr: np.ndarray) -> np.ndarray:
-    beta = 0.5 # 0.5 Equal mix of current and previous warped frame
+    beta = 0.5 # 0.5 Equal mix of current and previous warped frame. If too high then we might get ghosting (moving objects leave trail)
     blended = (1.0 - beta) * current_style_bgr.astype(np.float32) + beta * prev_warp_bgr.astype(np.float32)
     clip_blended = np.clip(blended, 0, 255).astype(np.uint8)
     return clip_blended
