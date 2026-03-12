@@ -15,7 +15,25 @@ requirementsW.txt
 # 00_input_data/
 logs/
 models/
-output_data/
+
+# Fast NST
+# output_data/videos
+# # adain
+# output_data/abstract_alpha0.4
+# output_data/camille_alpha0.4
+# output_data/chronis_alpha0.4
+# output_data/circles_alpha0.4
+# output_data/gray_alpha0.4
+# output_data/starry_night_alpha0.4
+# output_data/sunset_alpha0.4
+
+# output_data/adam1
+# output_data/adam2
+# output_data/sgd1
+# output_data/sgd2
+
+output_data
+
 save/
 
 liveVideoNST.py
@@ -25,3 +43,4 @@ liveVideoNST.py
 old/
 
 visualisation.py
+# portfolio_images.zip

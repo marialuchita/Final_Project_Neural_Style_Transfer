@@ -10,7 +10,6 @@ import torch
 import numpy as np
 from data_pipeline import *
 from torch.utils.data import DataLoader
-from torch.optim import Adam
 import torch.nn.functional as F
 from datetime import datetime
 
@@ -61,19 +60,6 @@ def save_model(transformer: TransformNetwork, folder_path: str, epoch: int, batc
         },
         out_model_path
     )
-
-# def get_log(epoch: int, time_elapsed: float, losses_dict: dict[str, float], iteration: int) -> dict[str, float]:
-#     log = {
-#         "epoch": epoch,
-#         "iteration": iteration,
-#         "content_loss": losses_dict["content_loss"] / iteration,
-#         "style_loss":  losses_dict["style_loss"] / iteration,
-#         "tv_loss": losses_dict["tv_loss"] / iteration,
-#         "total_loss": losses_dict["total_loss"] / iteration,
-#         "time_minutes": time_elapsed,
-#     }
-#     print(log)
-#     return log
 
 def train(content_folder_path: str, style_img_name: str):
     style_img_path = os.path.join("images/style", style_img_name)
