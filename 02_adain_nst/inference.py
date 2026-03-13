@@ -45,10 +45,6 @@ if __name__ == "__main__":
     style_img_names = ["abstract", "camille", "chronis", "circles", "gray", "starry_night", "sunset"]
     alpha = 0.4 # 1.0 style very strong, 0.8 normal combination with style, lower values less style
     model_path = "models/model_4_29570.pth"
-
-    # Run one style model:
-    # style_id = style_img_names[0]
-    # stylise(content_img_names, style_id, model_path, alpha)
     
     # Run all models:
     for style_id in style_img_names:

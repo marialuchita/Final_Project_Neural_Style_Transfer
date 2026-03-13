@@ -2,7 +2,6 @@ import torch
 import cv2 as cv
 from transform_network import TransformNetwork
 import os
-from datetime import datetime
 from data_pipeline import get_img_from_frame, img_to_tensor, tensor_to_img
 import numpy as np
 import time
