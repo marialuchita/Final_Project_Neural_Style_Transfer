@@ -9,6 +9,7 @@ import time
 STYLES = ["circles", "starry_night", "sunset"] # available models names
 CONTENT_VIDEOS_PATH = f"../00_input_data/videos" # folder where the videos are located
 OUTPUT_VIDEOS_FOLDER  = "output_data/videos/with_optical_flow" # folder where to save the stylised videos
+BETA = 0.7 # 0.5 Equal mix of current and previous warped frame. If too high then we might get ghosting (moving objects leave trail)
 
 def compute_optical_flow(prev_frame_bgr: np.ndarray, current_frame_bgr: np.ndarray) -> np.ndarray:
     prev_gray = cv.cvtColor(prev_frame_bgr, cv.COLOR_BGR2GRAY)
@@ -35,8 +36,8 @@ def warp_prev(img_bgr: np.ndarray, flow: np.ndarray) -> np.ndarray:
     return cv.remap(img_bgr, map_x, map_y, interpolation=cv.INTER_LINEAR, borderMode=cv.BORDER_REFLECT)
 
 def blend_with_current_stylisation(current_style_bgr: np.ndarray, prev_warp_bgr: np.ndarray) -> np.ndarray:
-    beta = 0.5 # 0.5 Equal mix of current and previous warped frame. If too high then we might get ghosting (moving objects leave trail)
-    blended = (1.0 - beta) * current_style_bgr.astype(np.float32) + beta * prev_warp_bgr.astype(np.float32)
+    
+    blended = (1.0 - BETA) * current_style_bgr.astype(np.float32) + BETA * prev_warp_bgr.astype(np.float32)
     clip_blended = np.clip(blended, 0, 255).astype(np.uint8)
     return clip_blended
 
