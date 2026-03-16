@@ -43,7 +43,7 @@ def stylise(content_img_names, style_id, model_path, alpha = 1.0):
 if __name__ == "__main__":
     content_img_names = [1, 2, 3, 4, 5, 6, 7, 8]
     style_img_names = ["abstract", "camille", "chronis", "circles", "gray", "starry_night", "sunset"]
-    alpha = 0.4 # 1.0 style very strong, 0.8 normal combination with style, lower values less style
+    alpha = 0.8 # 1.0 style very strong, 0.8 normal combination with style, lower values less style
     model_path = "models/model_4_29570.pth"
     
     # Run all models:
