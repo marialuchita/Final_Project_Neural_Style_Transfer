@@ -1,3 +1,4 @@
+# The loss network is implemented as per Johnson's approach
 import torch
 import torch.nn as nn
 from torchvision import models

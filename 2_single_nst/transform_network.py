@@ -1,4 +1,5 @@
-# https://cs.stanford.edu/people/jcjohns/papers/fast-style/fast-style-supp.pdf#
+# The architecture of the Transformation Network was implemented as per Johnson's paper:
+# https://cs.stanford.edu/people/jcjohns/papers/fast-style/fast-style-supp.pdf
 
 import torch
 import torch.nn as nn
@@ -83,7 +84,7 @@ class UpsampleLayer(nn.Module):
         self.upsample_factor = upsample_factor
 
     def forward(self, t: torch.Tensor) -> torch.Tensor:
-        out_t = F.interpolate(t, scale_factor=self.upsample_factor, mode="nearest") # increase image resolution by copying the pixels nearby.
+        out_t = F.interpolate(t, scale_factor=self.upsample_factor, mode="nearest") 
         out_t = self.conv(out_t)
         return out_t
 

@@ -1,3 +1,4 @@
+# Implementation of video stylisation with optical flow as per Ruder's approach
 import torch
 import cv2 as cv
 from transform_network import TransformNetwork
@@ -144,9 +145,12 @@ def stylise_video(video_names: list, style_id:str) -> None:
 
 
 if __name__ == "__main__":
+    # currently there are 3 videos available with 1-3. if other videos are added add 
+    # its name here and the video in the corresponding folder: see CONTENT_VIDEOS_PATH. 
+    # If you want to stylise just one video delete others from the list of video_names
     video_names = [1, 2, 3] 
 
-    # Run one style model:
+    # Run one style model on all videos:
     style_id = STYLES[0]
     stylise_video(
         video_names,

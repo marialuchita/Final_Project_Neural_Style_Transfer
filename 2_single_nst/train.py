@@ -1,11 +1,9 @@
+# Training script for training the model to stylise in a certain style. 
 import csv
 import time
 import os
 from loss_network import *
 from transform_network import TransformNetwork
-
-
-
 import torch
 import numpy as np
 from data_pipeline import *
@@ -17,7 +15,6 @@ BATCH_SIZE = 4
 WORKERS = 2
 LEARNING_RATE = 1e-4
 EPOCHS = 1
-
 CONTENT_LAYER = "relu2_2"
 CONTENT_WEIGHT = 1e0
 STYLE_WEIGHT = 4e5 # Johnson uses 1e5 to 4e5
@@ -61,8 +58,8 @@ def save_model(transformer: TransformNetwork, folder_path: str, epoch: int, batc
         out_model_path
     )
 
-def train(content_folder_path: str, style_img_name: str):
-    style_img_path = os.path.join("images/style", style_img_name)
+# training script
+def train(content_folder_path: str, style_img_path: str):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Device:", device)
 
@@ -99,7 +96,7 @@ def train(content_folder_path: str, style_img_name: str):
     start_time = time.time()
     curr_time_elapsed = 0
 
-    style_img_name_stem = Path(style_img_name).stem
+    style_img_name_stem = Path(style_img_path).stem
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     model_folder_path = os.path.join(
         "models",
@@ -220,4 +217,6 @@ def train(content_folder_path: str, style_img_name: str):
 
 
 if __name__ == "__main__":
-    train(content_folder_path="images/coco/train2017", style_img_name="sunset.jpg")
+    content_folder_path = "../00_input_data/images/coco/train2017" # training dataset of content images path
+    style_img_path = "../00_input_data/images/02_style/circles.jpg" # style image path
+    train(content_folder_path=content_folder_path, style_img_path=style_img_path)

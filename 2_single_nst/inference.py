@@ -38,6 +38,11 @@ def main(content_img_names, style_id):
 
 if __name__ == "__main__":
     style_id = STYLES[0] # 3 models trained. Pick the model here 0-2 ids
+
+    # currently there are the images available with names stems 1-8. if other image is added add 
+    # its name here and the image in the corresponding folder: see CONTENT_IMAGES_PATH. 
+    # If you want to stylise just one image delete others from the list of content_img_names
     content_img_names = [1, 2, 3, 4, 5, 6, 7, 8]
+
     main(content_img_names, style_id)
     print("Finished")

@@ -1,3 +1,4 @@
+# Helper functions for processing/loading data/images
 from PIL import Image
 from pathlib import Path
 import torch
