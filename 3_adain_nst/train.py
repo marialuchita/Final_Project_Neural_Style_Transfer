@@ -23,8 +23,8 @@ EPOCHS = 4
 BATCH_SIZE = 4
 WORKERS = 6
 
-COCO_PATH = "../images/coco/train2017"
-WIKI_PATH = "images/wikiart"
+COCO_PATH = f"../00_input_data/images/coco/train2017"
+WIKI_PATH = f"../00_input_data/images/wikiart"
 
 MODELS_PATH = "models"
 LOGS_PATH = "logs"

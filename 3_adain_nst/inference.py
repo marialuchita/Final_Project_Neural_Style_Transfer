@@ -41,13 +41,16 @@ def stylise(content_img_names, style_id, model_path, alpha = 1.0):
     # save_as_image(denormalized_output, output_path)
 
 if __name__ == "__main__":
-    content_img_names = [1, 2, 3, 4, 5, 6, 7, 8]
-    style_img_names = ["abstract", "camille", "chronis", "circles", "gray", "starry_night", "sunset"]
+    content_img_names = [1, 2, 3, 4, 5, 6, 7, 8] # include only the stem
+    style_img_names = ["abstract", "camille", "chronis", "circles", "gray", "starry_night", "sunset"] # include only the stem
     alpha = 0.8 # 1.0 style very strong, 0.8 normal combination with style, lower values less style
     model_path = "models/model_4_29570.pth"
     
-    # Run all models:
-    for style_id in style_img_names:
-        stylise(content_img_names, style_id, model_path, alpha)
+    # Individual stylisation
+    stylise(content_img_names, style_img_names[3], model_path, alpha)
 
+    # Run on all styles all content images:
+    # for style_id in style_img_names:
+    #     stylise(content_img_names, style_id, model_path, alpha)
+    
     print("Finished")

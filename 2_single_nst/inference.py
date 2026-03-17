@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # currently there are the images available with names stems 1-8. if other image is added add 
     # its name here and the image in the corresponding folder: see CONTENT_IMAGES_PATH. 
     # If you want to stylise just one image delete others from the list of content_img_names
-    content_img_names = [1, 2, 3, 4, 5, 6, 7, 8]
+    content_img_names = [1]
 
     main(content_img_names, style_id)
     print("Finished")
