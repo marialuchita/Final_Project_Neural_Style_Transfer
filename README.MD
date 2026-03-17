@@ -77,7 +77,7 @@ Inference (image): `inference.py`
 
 Inference (video with optical flow):`inference_video_opt_flow.py`
 
-Inference (video without optical flow): `python3 inference_video.py`
+Inference (video without optical flow): `inference_video.py`
 
 ### Notes
 
@@ -141,16 +141,16 @@ Make sure to load the content and style images and check the paths.
 
 We have used a selected dataset of Van Gogh images.
 
-Training: `lora_training.ipynb`
+Training: `lora_train.ipynb`
 
 ### 2.1. Inference without ControlNet
 
-Use a trained model from `models` folder and selected content and style images.
+Use a trained model from `models` folder and selected content images.
 
 Inference: `lora_inference_without_controlnet.ipynb`
 
-### 2.2. Inference without ControlNet
+### 2.2. Inference with ControlNet
 
-Use a trained model from `models` folder and selected content and style images.
+Use a trained model from `models` folder and selected content images.
 
 Inference: `lora_inference_controlnet.ipynb`
