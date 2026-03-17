@@ -12,7 +12,8 @@ venv/
 
 # Project data & outputs
 logs/
-output_data/
+output_data_all/
+output_data_videos/
 models_all/
 
 
