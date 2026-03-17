@@ -79,8 +79,6 @@ Inference (video with optical flow):`inference_video_opt_flow.py`
 
 Inference (video without optical flow): `python3 inference_video.py`
 
-```
-
 ### Notes
 
 - Ensure paths are correctly set.
@@ -117,6 +115,8 @@ Inference: `inference.py`
 
 Place datasets in: `00_input_data/`
 
+---
+
 # Diffusion-based NST Approaches
 
 Since Stable Diffusion models are computationally intensive, we performed training and stylization in Google Colab using an NVIDIA Tesla T4 GPU.
@@ -125,26 +125,32 @@ Since Stable Diffusion models are computationally intensive, we performed traini
 - **Model LoRA:** `models/`
 - **Outputs:** `output_data/`
 
+---
+
 ## 1. NST with Stable Diffusion, IP-Adapter and ControlNet
 
 Inference: `ip_adapter_controlnet.ipynb`
 
 Make sure to load the content and style images and check the paths.
 
+---
+
 ## 2. NST with Stable Diffusion and LoRA Fine-Tuning
 
 ### 2.1. Training
+
 We have used a selected dataset of Van Gogh images.
 
 Training: `lora_training.ipynb`
 
 ### 2.1. Inference without ControlNet
+
 Use a trained model from `models` folder and selected content and style images.
 
 Inference: `lora_inference_without_controlnet.ipynb`
 
 ### 2.2. Inference without ControlNet
+
 Use a trained model from `models` folder and selected content and style images.
 
 Inference: `lora_inference_controlnet.ipynb`
-```
