@@ -3,54 +3,136 @@
 ## Project Template 3.1: Final Project Code Instructions
 
 The project uses a virtual environment created in WSL.
-To install venv run: python3 -m venv venv
-To activate it run: source venv/bin/activate
-Install the requirements using the following command: pip install -r requirements.txt
 
-We already have a selected set of content and style images which we use to test the models. See folder: 00_input_data
+### Setup
 
-# Classical NST approaches
+Create the virtual environment:
 
-Methods/Implementations:
+```bash
+python3 -m venv venv
+```
 
-1. **Baseline Neural Style Transfer (Optimisation-Based) by Gatys et al.**
+Activate it:
 
-The implementation for this was entirely taken from:
-F. Chollet, Deep Learning with Python, 2nd ed. Shelter Island, NY: Manning Publications Co.,2021, ch. 12.3, pp. 383–390.
+```bash
+source venv/bin/activate
+```
 
-Relevant folder: 1_gatys_nst
-Examples of stylised images are in the subfolder output_data
+Install the requirements:
 
-We have experimented here with other optimisers and content and style weights.
+```bash
+pip install -r requirements.txt
+```
 
-2. **Real-Time Style Transfer (Single Style) according to Johnson et al. for BOTH images and videos**
+---
 
-The implementation was done by me as per paper and architectures provided in:
-J. Johnson, A. Alahi, and L. Fei-Fei, “Perceptual losses for real-time style transfer and superresolution,” in Computer Vision – ECCV 2016, vol. 9906. Springer, 10 2016, pp. 694–711.
+We already have a selected set of content and style images used to test the models.
+See folder: `00_input_data`
 
-The implementation of optical flow for video stylisation using the single style transfer models trained was done by me as per approach provided by M. Ruder, A. Dosovitskiy, and T. Brox, “Artistic style transfer for videos,” Arxiv, 04 2016.
+---
 
-Relevant folder: 2_single_nst
-Models trained are in the subfolder: models - There are 3 models trained for 3 different styles.
-Examples of stylised images are in the subfolder output_data/images
-Examples of stylised videos with and without optical flow are in the subfolder output_data/videos
+# Classical NST Approaches
 
-For training use the script: train.py (we used the MS COCO 2017 dataset. Make sure to include it in the 00_input_data folder)
-For inference (image) use the script: inference.py
-For inference (video with optical flow) use the script: inference_video_opt_flow.py
-For inference (video without optical flow) use the script: inference_video.py
+## 1. Baseline Neural Style Transfer (Optimisation-Based) – Gatys et al.
 
-NB: Make sure that the paths are correctly given. For content images and video images we currently use the paths pointing to the 00_input_data/images and 00_input_data/videos.
-For the trained models, content images names we use only the stems without file ending.
+The implementation was taken from:
 
-3. **Multi-Style Transfer (AdaIN) according to Huang et al.**
+> F. Chollet, _Deep Learning with Python_, 2nd ed. Shelter Island, NY: Manning Publications Co., 2021, ch. 12.3, pp. 383–390.
 
-The implementation was done by me as per paper and architectures provided in:
-X. Huang and S. Belongie, “Arbitrary style transfer in real-time with adaptive instance normalization,” 2017. [Online]. Available: https://arxiv.org/abs/1703.06868
+- **Folder:** `1_gatys_nst`
+- **Outputs:** `output_data/`
 
-Relevant folder: 3_adain_nst
-Model trained is in the subfolder: models.
-Examples of stylised images are in the subfolder output_data.
+We experimented with different optimisers and content/style weights.
 
-For inference (image) use the script: inference.py
-For training use the script: train.py (we used the MS COCO 2017 dataset and Wikiart dataset. Make sure to include it in the 00_input_data folder)
+---
+
+## 2. Real-Time Style Transfer (Single Style) – Johnson et al.
+
+Implemented based on:
+
+> J. Johnson, A. Alahi, and L. Fei-Fei,
+> “Perceptual losses for real-time style transfer and superresolution,” ECCV 2016.
+
+Video stylisation with optical flow based on:
+
+> M. Ruder, A. Dosovitskiy, and T. Brox,
+> “Artistic style transfer for videos,” 2016.
+
+- **Folder:** `2_single_nst`
+- **Models:** `models/` (3 trained styles)
+- **Image outputs:** `output_data/images/`
+- **Video outputs:** `output_data/videos/`
+
+### Scripts
+
+Training:
+
+```bash
+python train.py
+```
+
+Inference (image):
+
+```bash
+python inference.py
+```
+
+Inference (video with optical flow):
+
+```bash
+python inference_video_opt_flow.py
+```
+
+Inference (video without optical flow):
+
+```bash
+python inference_video.py
+```
+
+### Notes
+
+- Ensure paths are correctly set.
+- Content data is expected in:
+  - `00_input_data/images`
+  - `00_input_data/videos`
+
+- Model and image names use **file stems (no extensions)**.
+
+---
+
+## 3. Multi-Style Transfer (AdaIN) – Huang et al.
+
+Based on:
+
+> X. Huang and S. Belongie,
+> “Arbitrary style transfer in real-time with adaptive instance normalization,” 2017.
+> https://arxiv.org/abs/1703.06868
+
+- **Folder:** `3_adain_nst`
+- **Model:** `models/`
+- **Outputs:** `output_data/`
+
+### Scripts
+
+Training:
+
+```bash
+python train.py
+```
+
+Inference:
+
+```bash
+python inference.py
+```
+
+### Dataset Requirements
+
+- MS COCO 2017
+- WikiArt
+
+Place datasets in:
+
+```bash
+00_input_data/
+```
