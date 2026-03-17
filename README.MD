@@ -33,6 +33,10 @@ See folder: `00_input_data`
 
 # Classical NST Approaches
 
+The classical NST methods were trained and used for stylization (inference) on an NVIDIA RTX 3060 GPU.
+
+The classical NST implementations:
+
 ## 1. Baseline Neural Style Transfer (Optimisation-Based) – Gatys et al.
 
 The implementation was taken from:
@@ -63,36 +67,22 @@ Video stylisation with optical flow based on:
 - **Image outputs:** `output_data/images/`
 - **Video outputs:** `output_data/videos/`
 
-### Scripts
+### Scripts to run from inside the respective folder
 
-Training:
+Training: `train.py`
 
-```bash
-python train.py
-```
+Inference (image): `inference.py`
 
-Inference (image):
+Inference (video with optical flow):`inference_video_opt_flow.py`
 
-```bash
-python inference.py
-```
+Inference (video without optical flow): `python3 inference_video.py`
 
-Inference (video with optical flow):
-
-```bash
-python inference_video_opt_flow.py
-```
-
-Inference (video without optical flow):
-
-```bash
-python inference_video.py
 ```
 
 ### Notes
 
 - Ensure paths are correctly set.
-- Content data is expected in:
+- Content data is expected to be included in:
   - `00_input_data/images`
   - `00_input_data/videos`
 
@@ -112,27 +102,47 @@ Based on:
 - **Model:** `models/`
 - **Outputs:** `output_data/`
 
-### Scripts
+### Scripts to run from inside the respective folder
 
-Training:
+Training: `train.py`
 
-```bash
-python train.py
-```
-
-Inference:
-
-```bash
-python inference.py
-```
+Inference: `inference.py`
 
 ### Dataset Requirements
 
 - MS COCO 2017
 - WikiArt
 
-Place datasets in:
+Place datasets in: `00_input_data/`
 
-```bash
-00_input_data/
+# Diffusion-based NST Approaches
+
+Since Stable Diffusion models are computationally intensive, we performed training and stylization in Google Colab using an NVIDIA Tesla T4 GPU.
+
+- **Folder:** `4_stable_diffusion_nst`
+- **Model LoRA:** `models/`
+- **Outputs:** `output_data/`
+
+## 1. NST with Stable Diffusion, IP-Adapter and ControlNet
+
+Inference: `ip_adapter_controlnet.ipynb`
+
+Make sure to load the content and style images and check the paths.
+
+## 2. NST with Stable Diffusion and LoRA Fine-Tuning
+
+### 2.1. Training
+We have used a selected dataset of Van Gogh images.
+
+Training: `lora_training.ipynb`
+
+### 2.1. Inference without ControlNet
+Use a trained model from `models` folder and selected content and style images.
+
+Inference: `lora_inference_without_controlnet.ipynb`
+
+### 2.2. Inference without ControlNet
+Use a trained model from `models` folder and selected content and style images.
+
+Inference: `lora_inference_controlnet.ipynb`
 ```
