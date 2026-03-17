@@ -1,6 +1,6 @@
 # Neural Style Transfer
 
-### Link to stylised portfolio of images and videos: `https://drive.google.com/drive/folders/1J4Mb9XTQUdS7O_ybdBIqgrRz_U8AQ2Yj?usp=drive_link`
+### Link to stylised portfolio of images and videos: [View Portfolio](https://drive.google.com/drive/folders/1J4Mb9XTQUdS7O_ybdBIqgrRz_U8AQ2Yj?usp=drive_link)
 
 ## Project Template 3.1: Final Project Code Instructions
 
