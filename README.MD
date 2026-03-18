@@ -37,7 +37,7 @@ See folder: `00_input_data`
 
 # Classical NST Approaches
 
-The classical NST methods were trained and used for stylization (inference) on an NVIDIA RTX 3060 GPU.
+The classical NST methods were trained and used for stylization (inference) on my device with NVIDIA RTX 3060 GPU.
 
 These are:
 
@@ -48,7 +48,7 @@ The implementation was taken from:
 > F. Chollet, _Deep Learning with Python_, 2nd ed. Shelter Island, NY: Manning Publications Co., 2021, ch. 12.3, pp. 383–390.
 
 - **Go to Folder:** `1_gatys_nst`
-- **Visualisation Outputs:** `output_data/`
+- **Visualisation Outputs are in the following subfolder:** `output_data/`
 
 We experimented with different optimisers and content/style weights.
 
@@ -58,7 +58,7 @@ We experimented with different optimisers and content/style weights.
 
 ---
 
-## 2. Real-Time Style Transfer (Single Style) – Johnson et al.
+## 2. Real-Time Style Transfer (Single Style) – Johnson et al. for BOTH Images and Videos
 
 Implemented based on:
 
@@ -71,9 +71,11 @@ Video stylisation with optical flow based on:
 > “Artistic style transfer for videos,” 2016.
 
 - **Go to Folder:** `2_single_nst`
-- **Trained Models:** `models/` (3 trained styles)
-- **Image Visualisation Outputs:** `output_data/images/`
-- **Video Visualisation Outputs:** `output_data/videos/`
+- **Trained Models are in the following subfolder:** `models/` (3 trained styles)
+- **Image Visualisation Outputs are in the following subfolder:** `output_data/images/`
+- **Video Visualisation Outputs are in the following subfolder:** `output_data/videos/`
+  - with Optical Flow: `with_optical_flow/`
+  - without Optical Flow: `without_optical_flow/`
 
 ### Scripts to run from inside the respective folder
 
