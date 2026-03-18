@@ -3,8 +3,17 @@
 ## Table of Contents
 
 - [Instructions](#instructions)
+  - [Setup](#setup)
 - [Classical NST Implementations](#classical-nst-implementations)
-- [Diffusion-based NST Implementations](#diffusion-based-nst-mplementations)
+  - [Baseline Neural Style Transfer (Optimisation-Based) – Gatys et al.](#1-baseline-neural-style-transfer-optimisation-based--gatys-et-al)
+  - [Real-Time Style Transfer (Single Style) – Johnson et al. for BOTH Images and Videos](#2-real-time-style-transfer-single-style--johnson-et-al-for-both-images-and-videos)
+  - [Multi-Style Transfer (AdaIN) – Huang et al.](#3-multi-style-transfer-adain--huang-et-al)
+- [Diffusion-based NST Implementations](#diffusion-based-nst-implementations)
+  - [NST with Stable Diffusion, IP-Adapter and ControlNet](#1-nst-with-stable-diffusion-ip-adapter-and-controlnet)
+  - [NST with Stable Diffusion and LoRA Fine-Tuning](#2-nst-with-stable-diffusion-and-lora-fine-tuning)
+    - [Training](#21-training)
+    - [Inference without ControlNet](#21-inference-without-controlnet)
+    - [Inference with ControlNet](#22-inference-with-controlnet)
 
 # Instructions
 
