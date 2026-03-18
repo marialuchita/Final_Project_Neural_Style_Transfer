@@ -1,14 +1,20 @@
-# Neural Style Transfer
+<h1>Neural Style Transfer</h1>
 
-### Link to stylised portfolio of images and videos: [View Portfolio](https://drive.google.com/drive/folders/1J4Mb9XTQUdS7O_ybdBIqgrRz_U8AQ2Yj?usp=drive_link)
+## Table of Contents
 
-## Project Template 3.1: Final Project Code Instructions
+# Project Template 3.1: Final Project Code Instructions
+
+## Link to stylised portfolio of images and videos
+
+These can be found also in the corresponding `output_data` folders, however not all videos are included due to their size.
+
+[View Portfolio](https://drive.google.com/drive/folders/1J4Mb9XTQUdS7O_ybdBIqgrRz_U8AQ2Yj?usp=drive_link)
+
+## Setup
 
 The project uses a virtual environment created in WSL.
 
-### Setup
-
-Python used in the project is: `Python 3.12.3`
+Python version used in the project is: `Python 3.12.3`
 
 Create the virtual environment:
 
@@ -149,17 +155,17 @@ Inference: `inference.py`
 Since Stable Diffusion models are computationally intensive, we performed training and stylization in **Google Colab** using an NVIDIA Tesla T4 GPU.
 
 - **Go to Folder:** `4_stable_diffusion_nst`
-- **Trained Models LoRA:** `models/`
-- **Visualisation Outputs:** `output_data/`
-  - NST with Stable Diffusion, IP-Adapter and ControlNet: `ip_adapter_controlnet/`
-    - Stylisation with single style: `ip_controlnet_single_style/`
+- **Trained Models LoRA are in the subfolder:** `models/`
+- **Stylisation Outputs are in the subfolder:** `output_data/`
+  - **NST with Stable Diffusion, IP-Adapter and ControlNet:** `ip_adapter_controlnet/`
+    - **Stylisation with single style:** `ip_controlnet_single_style/`
       - Note: Inside you will find different subfolder with different hyperparameters experiments.
-    - Stylisation with multiple styles: `ip_controlnet_multiple_styles/`
+    - **Stylisation with multiple styles:** `ip_controlnet_multiple_styles/`
       - Note: Inside you will find different subfolder with different hyperparameters experiments.
-  - LoRA: `lora/`
-    - Stylisation with ControlNet: `with_controlnet/`
+  - **LoRA:** `lora/`
+    - **Stylisation with ControlNet:** `with_controlnet/`
       - Note: Inside you will find different subfolder with different hyperparameters experiments.
-    - Stylisation without ControlNet: `without_controlnet/`
+    - **Stylisation without ControlNet:** `without_controlnet/`
 
 ---
 
