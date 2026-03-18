@@ -39,7 +39,7 @@ See folder: `00_input_data`
 
 The classical NST methods were trained and used for stylization (inference) on an NVIDIA RTX 3060 GPU.
 
-The classical NST implementations:
+These are:
 
 ## 1. Baseline Neural Style Transfer (Optimisation-Based) – Gatys et al.
 
@@ -47,10 +47,14 @@ The implementation was taken from:
 
 > F. Chollet, _Deep Learning with Python_, 2nd ed. Shelter Island, NY: Manning Publications Co., 2021, ch. 12.3, pp. 383–390.
 
-- **Folder:** `1_gatys_nst`
-- **Outputs:** `output_data/`
+- **Go to Folder:** `1_gatys_nst`
+- **Visualisation Outputs:** `output_data/`
 
 We experimented with different optimisers and content/style weights.
+
+### Stylisation examples:
+
+![Optimisation based NST](readme_visuals/results_gatys.png)
 
 ---
 
@@ -66,10 +70,10 @@ Video stylisation with optical flow based on:
 > M. Ruder, A. Dosovitskiy, and T. Brox,
 > “Artistic style transfer for videos,” 2016.
 
-- **Folder:** `2_single_nst`
-- **Models:** `models/` (3 trained styles)
-- **Image outputs:** `output_data/images/`
-- **Video outputs:** `output_data/videos/`
+- **Go to Folder:** `2_single_nst`
+- **Trained Models:** `models/` (3 trained styles)
+- **Image Visualisation Outputs:** `output_data/images/`
+- **Video Visualisation Outputs:** `output_data/videos/`
 
 ### Scripts to run from inside the respective folder
 
@@ -88,7 +92,11 @@ Inference (video without optical flow): `inference_video.py`
   - `00_input_data/images`
   - `00_input_data/videos`
 
-- Model and image names use **file stems (no extensions)**.
+- Model and image names use **file stems (no extensions)** in the script.
+
+### Stylisation examples:
+
+![Single NST](readme_visuals/single_style_results_grid.png)
 
 ---
 
@@ -99,9 +107,9 @@ Based on:
 > X. Huang and S. Belongie,
 > “Arbitrary style transfer in real-time with adaptive instance normalization,” 2017.
 
-- **Folder:** `3_adain_nst`
-- **Model:** `models/`
-- **Outputs:** `output_data/`
+- **Go to Folder:** `3_adain_nst`
+- **Trained Models:** `models/`
+- **Visualisation Outputs:** `output_data/`
 
 ### Scripts to run from inside the respective folder
 
@@ -116,15 +124,19 @@ Inference: `inference.py`
 
 Place datasets in: `00_input_data/`
 
+### Stylisation examples:
+
+![AdaIN NST](readme_visuals/adain0.8_results_grid.png)
+
 ---
 
 # Diffusion-based NST Approaches
 
 Since Stable Diffusion models are computationally intensive, we performed training and stylization in Google Colab using an NVIDIA Tesla T4 GPU.
 
-- **Folder:** `4_stable_diffusion_nst`
-- **Model LoRA:** `models/`
-- **Outputs:** `output_data/`
+- **Go to Folder:** `4_stable_diffusion_nst`
+- **Trained Models LoRA:** `models/`
+- **Visualisation Outputs:** `output_data/`
 
 ---
 
@@ -133,6 +145,16 @@ Since Stable Diffusion models are computationally intensive, we performed traini
 Inference: `ip_adapter_controlnet.ipynb`
 
 Make sure to load the content and style images and check the paths.
+
+### Stylisation examples:
+
+#### NST with Stable Diffusion with IP-Adapter and ControlNet (single style)
+
+![NST with Stable Diffusion with IP-Adapter and ControlNet (single style)](readme_visuals/stable_diff_1_1_6.png)
+
+#### NST with Stable Diffusion with IP-Adapter and ControlNet (multiple styles)
+
+![NST with Stable Diffusion with IP-Adapter and ControlNet (multiple styles)](readme_visuals/SDip0.5multiple.png)
 
 ---
 
@@ -150,40 +172,16 @@ Use a trained model from `models` folder and selected content images.
 
 Inference: `lora_inference_without_controlnet.ipynb`
 
+### Stylisation examples:
+
+![NST with Stable Diffusion with LoRA fine-tuning without ControlNet](readme_visuals/lora_comparison_grid.png)
+
 ### 2.2. Inference with ControlNet
 
 Use a trained model from `models` folder and selected content images.
 
 Inference: `lora_inference_controlnet.ipynb`
 
----
-
-# Examples of Stylised Images
-
-## Optimisation based NST
-
-![Optimisation based NST](readme_visuals/results_gatys.png)
-
-## Single NST
-
-![Single NST](readme_visuals/single_style_results_grid.png)
-
-## AdaIN NST
-
-![AdaIN NST](readme_visuals/adain0.8_results_grid.png)
-
-## NST with Stable Diffusion with IP-Adapter and ControlNet (single style)
-
-![NST with Stable Diffusion with IP-Adapter and ControlNet (single style)](readme_visuals/stable_diff_1_1_6.png)
-
-## NST with Stable Diffusion with IP-Adapter and ControlNet (multiple styles)
-
-![NST with Stable Diffusion with IP-Adapter and ControlNet (multiple styles)](readme_visuals/SDip0.5multiple.png)
-
-## NST with Stable Diffusion with LoRA fine-tuning without ControlNet
-
-![NST with Stable Diffusion with LoRA fine-tuning without ControlNet](readme_visuals/lora_comparison_grid.png)
-
-## NST with Stable Diffusion with LoRA fine-tuning and ControlNet
+### Stylisation examples:
 
 ![NST with Stable Diffusion with LoRA fine-tuning and ControlNet](readme_visuals/lora_comparison_grid2.png)
