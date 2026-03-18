@@ -77,7 +77,7 @@ Video stylisation with optical flow based on:
   - with Optical Flow: `with_optical_flow/`
   - without Optical Flow: `without_optical_flow/`
 
-### Scripts to run from inside the respective folder
+### Scripts to run from inside the `2_single_nst` folder
 
 Training: `train.py`
 
@@ -94,7 +94,7 @@ Inference (video without optical flow): `inference_video.py`
   - `00_input_data/images`
   - `00_input_data/videos`
 
-- Model and image names use **file stems (no extensions)** in the script.
+- In the scripts (specifically inference) we use **file stems (no extensions)**.
 
 ### Stylisation examples:
 
@@ -119,14 +119,26 @@ Training: `train.py`
 
 Inference: `inference.py`
 
-### Dataset Requirements
+### Notes
 
-- MS COCO 2017
-- WikiArt
+- Ensure paths are correctly set.
+- Dataset Requirements for training:
+  - MS COCO 2017
+  - WikiArt
 
-Place datasets in: `00_input_data/`
+  Place datasets in: `00_input_data/`
+
+- Data Requirements for inference:
+  - Put the content image in:
+    - `00_input_data/images/01_content`
+  - Put the style image in:
+    - `00_input_data//images/02_style`
+
+- In the scripts (specifically inference) we use **file stems (no extensions)**.
 
 ### Stylisation examples:
+
+- Alpha used: 0.8
 
 ![AdaIN NST](readme_visuals/adain0.8_results_grid.png)
 
