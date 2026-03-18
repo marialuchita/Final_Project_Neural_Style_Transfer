@@ -159,16 +159,16 @@ Inference: `lora_inference_controlnet.ipynb`
 
 # Examples of Stylised Images
 
-![Optimisation based NST](readme/results_gatys.png)
+![Optimisation based NST](readme_visuals/results_gatys.png)
 
-![Single NST](readme/single_style_results_grid.png)
+![Single NST](readme_visuals/single_style_results_grid.png)
 
-![AdaIN NST](readme/adain0.8_results_grid.png)
+![AdaIN NST](readme_visuals/adain0.8_results_grid.png)
 
-![NST with Stable Diffusion with IP-Adapter and ControlNet (single style)](readme/stable_diff_1_1_6.png)
+![NST with Stable Diffusion with IP-Adapter and ControlNet (single style)](readme_visuals/stable_diff_1_1_6.png)
 
-![NST with Stable Diffusion with IP-Adapter and ControlNet (multiple styles)](readme/SDip0.5multiple.png)
+![NST with Stable Diffusion with IP-Adapter and ControlNet (multiple styles)](readme_visuals/SDip0.5multiple.png)
 
-![NST with Stable Diffusion with LoRA fine-tuning without ControlNet](readme/lora_comparison_grid.png)
+![NST with Stable Diffusion with LoRA fine-tuning without ControlNet](readme_visuals/lora_comparison_grid.png)
 
-![NST with Stable Diffusion with LoRA fine-tuning and ControlNet](readme/lora_comparison_grid2.png)
+![NST with Stable Diffusion with LoRA fine-tuning and ControlNet](readme_visuals/lora_comparison_grid2.png)
