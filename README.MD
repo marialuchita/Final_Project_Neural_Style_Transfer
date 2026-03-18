@@ -5,7 +5,7 @@
 - [Instructions](#instructions)
   - [Setup](#setup)
 - [Classical NST Implementations](#classical-nst-implementations)
-  - [Baseline Neural Style Transfer (Optimisation-Based) - Gatys et al.] (#1-baseline-neural-style-transfer-optimization-based--gatys-et-al)
+  - [Baseline Neural Style Transfer (Optimisation-Based) - Gatys et al.](#1-baseline-neural-style-transfer-optimization-based--gatys-et-al)
   - [Real-Time Style Transfer (Single Style) - Johnson et al. for BOTH Images and Videos](#2-real-time-style-transfer-single-style--johnson-et-al-for-both-images-and-videos)
   - [Multi-Style Transfer (AdaIN) - Huang et al.](#3-multi-style-transfer-adain--huang-et-al)
 - [Diffusion-based NST Implementations](#diffusion-based-nst-implementations)
