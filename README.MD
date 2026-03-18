@@ -48,7 +48,7 @@ The implementation was taken from:
 > F. Chollet, _Deep Learning with Python_, 2nd ed. Shelter Island, NY: Manning Publications Co., 2021, ch. 12.3, pp. 383–390.
 
 - **Go to Folder:** `1_gatys_nst`
-- **Visualisation Outputs are in the following subfolder:** `output_data/`
+- **Stylisation Outputs are in the subfolder:** `output_data/`
 
 We experimented with different optimisers and content/style weights.
 
@@ -71,13 +71,13 @@ Video stylisation with optical flow based on:
 > “Artistic style transfer for videos,” 2016.
 
 - **Go to Folder:** `2_single_nst`
-- **Trained Models are in the following subfolder:** `models/` (3 trained styles)
-- **Image Visualisation Outputs are in the following subfolder:** `output_data/images/`
-- **Video Visualisation Outputs are in the following subfolder:** `output_data/videos/`
+- **Trained Models are in the subfolder:** `models/` (3 trained styles)
+- **Image Stylisation Outputs are in the subfolder:** `output_data/images/`
+- **Video Stylisation Outputs are in the subfolder:** `output_data/videos/`
   - with Optical Flow: `with_optical_flow/`
   - without Optical Flow: `without_optical_flow/`
 
-### Scripts to run from inside the `2_single_nst` folder
+### Scripts to run inside the `2_single_nst` folder
 
 Training: `train.py`
 
@@ -91,7 +91,7 @@ Inference (video without optical flow): `inference_video.py`
 
 - Ensure paths are correctly set.
 - Content data is expected to be included in:
-  - `00_input_data/images`
+  - `00_input_data/images/01_content`
   - `00_input_data/videos`
 
 - In the scripts (specifically inference) we use **file stems (no extensions)**.
@@ -110,10 +110,10 @@ Based on:
 > “Arbitrary style transfer in real-time with adaptive instance normalization,” 2017.
 
 - **Go to Folder:** `3_adain_nst`
-- **Trained Models:** `models/`
-- **Visualisation Outputs:** `output_data/`
+- **Trained Models are in the subfolder:** `models/`
+- **Stylisation Outputs are in the subfolder:** `output_data/`
 
-### Scripts to run from inside the respective folder
+### Scripts to run inside the `3_adain_nst` folder
 
 Training: `train.py`
 
@@ -132,7 +132,7 @@ Inference: `inference.py`
   - Put the content image in:
     - `00_input_data/images/01_content`
   - Put the style image in:
-    - `00_input_data//images/02_style`
+    - `00_input_data/images/02_style`
 
 - In the scripts (specifically inference) we use **file stems (no extensions)**.
 
@@ -146,11 +146,20 @@ Inference: `inference.py`
 
 # Diffusion-based NST Approaches
 
-Since Stable Diffusion models are computationally intensive, we performed training and stylization in Google Colab using an NVIDIA Tesla T4 GPU.
+Since Stable Diffusion models are computationally intensive, we performed training and stylization in **Google Colab** using an NVIDIA Tesla T4 GPU.
 
 - **Go to Folder:** `4_stable_diffusion_nst`
 - **Trained Models LoRA:** `models/`
 - **Visualisation Outputs:** `output_data/`
+  - NST with Stable Diffusion, IP-Adapter and ControlNet: `ip_adapter_controlnet/`
+    - Stylisation with single style: `ip_controlnet_single_style/`
+      - Note: Inside you will find different subfolder with different hyperparameters experiments.
+    - Stylisation with multiple styles: `ip_controlnet_multiple_styles/`
+      - Note: Inside you will find different subfolder with different hyperparameters experiments.
+  - LoRA: `lora/`
+    - Stylisation with ControlNet: `with_controlnet/`
+      - Note: Inside you will find different subfolder with different hyperparameters experiments.
+    - Stylisation without ControlNet: `without_controlnet/`
 
 ---
 
@@ -158,7 +167,7 @@ Since Stable Diffusion models are computationally intensive, we performed traini
 
 Inference: `ip_adapter_controlnet.ipynb`
 
-Make sure to load the content and style images and check the paths.
+Make sure to load the content and style images and check the paths. Since we used Google Colab these might be different when used.
 
 ### Stylisation examples:
 
@@ -176,13 +185,13 @@ Make sure to load the content and style images and check the paths.
 
 ### 2.1. Training
 
-We have used a selected dataset of Van Gogh images.
+We have used a selected dataset of Van Gogh images. Make sure to load it correspondingly and check the paths. Since we used Google Colab these might be different when used.
 
 Training: `lora_train.ipynb`
 
 ### 2.1. Inference without ControlNet
 
-Use a trained model from `models` folder and selected content images.
+Use a trained model from `models` folder and selected content images. Make sure to check the paths. Since we used Google Colab these might be different when used.
 
 Inference: `lora_inference_without_controlnet.ipynb`
 
@@ -192,7 +201,7 @@ Inference: `lora_inference_without_controlnet.ipynb`
 
 ### 2.2. Inference with ControlNet
 
-Use a trained model from `models` folder and selected content images.
+Use a trained model from `models` folder and selected content images. Make sure to check the paths. Since we used Google Colab these might be different when used.
 
 Inference: `lora_inference_controlnet.ipynb`
 
