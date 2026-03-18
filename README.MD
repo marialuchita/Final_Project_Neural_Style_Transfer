@@ -188,11 +188,11 @@ Make sure to load the content and style images and check the paths. Since we use
 
 ### Stylisation examples:
 
-#### NST with Stable Diffusion with IP-Adapter and ControlNet (single style)
+#### Single Style
 
 ![NST with Stable Diffusion with IP-Adapter and ControlNet (single style)](readme_visuals/stable_diff_1_1_6.png)
 
-#### NST with Stable Diffusion with IP-Adapter and ControlNet (multiple styles)
+#### Multiple Styles
 
 ![NST with Stable Diffusion with IP-Adapter and ControlNet (multiple styles)](readme_visuals/SDip0.5multiple.png)
 
