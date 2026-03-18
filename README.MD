@@ -8,6 +8,8 @@ The project uses a virtual environment created in WSL.
 
 ### Setup
 
+Python used in the project is: `Python 3.12.3`
+
 Create the virtual environment:
 
 ```bash
@@ -20,7 +22,7 @@ Activate it:
 source venv/bin/activate
 ```
 
-Install the requirements:
+Install the requirements. This is only for the classical NST implementations:
 
 ```bash
 pip install -r requirements.txt
@@ -96,7 +98,6 @@ Based on:
 
 > X. Huang and S. Belongie,
 > “Arbitrary style transfer in real-time with adaptive instance normalization,” 2017.
-> https://arxiv.org/abs/1703.06868
 
 - **Folder:** `3_adain_nst`
 - **Model:** `models/`
