@@ -1,14 +1,16 @@
-<h1>Neural Style Transfer</h1>
+<h1>Neural Style Transfer - Project Template 3.1: Final Project</h1>
 
 ## Table of Contents
 
-# Project Template 3.1: Final Project Code Instructions
+- [Instructions](#instructions)
+- [Classical NST Implementations](#classical-nst-implementations)
+- [Diffusion-based NST Implementations](#diffusion-based-nst-mplementations)
 
-## Link to stylised portfolio of images and videos
+# Instructions
+
+- **Link to stylised portfolio of images and videos**: [View Portfolio](https://drive.google.com/drive/folders/1J4Mb9XTQUdS7O_ybdBIqgrRz_U8AQ2Yj?usp=drive_link)
 
 These can be found also in the corresponding `output_data` folders, however not all videos are included due to their size.
-
-[View Portfolio](https://drive.google.com/drive/folders/1J4Mb9XTQUdS7O_ybdBIqgrRz_U8AQ2Yj?usp=drive_link)
 
 ## Setup
 
@@ -41,7 +43,7 @@ See folder: `00_input_data`
 
 ---
 
-# Classical NST Approaches
+# Classical NST Implementations
 
 The classical NST methods were trained and used for stylization (inference) on my device with NVIDIA RTX 3060 GPU.
 
@@ -150,7 +152,7 @@ Inference: `inference.py`
 
 ---
 
-# Diffusion-based NST Approaches
+# Diffusion-based NST Implementations
 
 Since Stable Diffusion models are computationally intensive, we performed training and stylization in **Google Colab** using an NVIDIA Tesla T4 GPU.
 
