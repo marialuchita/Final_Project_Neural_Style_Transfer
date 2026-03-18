@@ -5,9 +5,9 @@
 - [Instructions](#instructions)
   - [Setup](#setup)
 - [Classical NST Implementations](#classical-nst-implementations)
-  - [Baseline Neural Style Transfer (Optimisation-Based) - Gatys et al.](#1-baseline-neural-style-transfer-optimization-based--gatys-et-al)
-  - [Real-Time Style Transfer (Single Style) - Johnson et al. for BOTH Images and Videos](#2-real-time-style-transfer-single-style--johnson-et-al-for-both-images-and-videos)
-  - [Multi-Style Transfer (AdaIN) - Huang et al.](#3-multi-style-transfer-adain--huang-et-al)
+  - [Baseline Neural Style Transfer (Optimisation-Based) – Gatys et al.](#1-baseline-neural-style-transfer-optimisation-based--gatys-et-al)
+  - [Real-Time Style Transfer (Single Style) – Johnson et al. for BOTH Images and Videos](#2-real-time-style-transfer-single-style--johnson-et-al-for-both-images-and-videos)
+  - [Multi-Style Transfer (AdaIN) – Huang et al.](#3-multi-style-transfer-adain--huang-et-al)
 - [Diffusion-based NST Implementations](#diffusion-based-nst-implementations)
   - [NST with Stable Diffusion, IP-Adapter and ControlNet](#1-nst-with-stable-diffusion-ip-adapter-and-controlnet)
   - [NST with Stable Diffusion and LoRA Fine-Tuning](#2-nst-with-stable-diffusion-and-lora-fine-tuning)
@@ -58,11 +58,11 @@ The classical NST methods were trained and used for stylization (inference) on m
 
 These are:
 
-## 1. Baseline Neural Style Transfer (Optimisation-Based) - Gatys et al.
+## 1. Baseline Neural Style Transfer (Optimisation-Based) – Gatys et al.
 
 The implementation was taken from:
 
-> F. Chollet, _Deep Learning with Python_, 2nd ed. Shelter Island, NY: Manning Publications Co., 2021, ch. 12.3, pp. 383-390.
+> F. Chollet, _Deep Learning with Python_, 2nd ed. Shelter Island, NY: Manning Publications Co., 2021, ch. 12.3, pp. 383–390.
 
 - **Go to Folder:** `1_gatys_nst`
 - **Stylisation Outputs are in the subfolder:** `output_data/`
@@ -75,7 +75,7 @@ We experimented with different optimisers and content/style weights.
 
 ---
 
-## 2. Real-Time Style Transfer (Single Style) - Johnson et al. for BOTH Images and Videos
+## 2. Real-Time Style Transfer (Single Style) – Johnson et al. for BOTH Images and Videos
 
 Implemented based on:
 
@@ -119,7 +119,7 @@ Inference (video without optical flow): `inference_video.py`
 
 ---
 
-## 3. Multi-Style Transfer (AdaIN) - Huang et al.
+## 3. Multi-Style Transfer (AdaIN) – Huang et al.
 
 Based on:
 
